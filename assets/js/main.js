@@ -1,10 +1,21 @@
 
     'use strict';
     const $ = id => document.getElementById(id);
+    const setText = (id, value) => {
+      const el = $(id);
+      if (el) el.textContent = value;
+    };
+    const setHref = (id, value) => {
+      const el = $(id);
+      if (el) el.href = value;
+    };
     const WAPP = '258856812121';
     const round = x => Math.round((x + Number.EPSILON) * 100) / 100;
     const money = n => new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(round(n)) + ' MT';
-    const trim = id => String($(id).value || '').trim();
+    const trim = id => {
+      const el = $(id);
+      return String((el && el.value) || '').trim();
+    };
     const whatsUrl = msg => 'https://wa.me/' + WAPP + '?text=' + encodeURIComponent(msg);
     function parseAmount(raw) {
       let v = String(raw || '').trim().replace(/[\s\u00a0]/g, '');
@@ -24,32 +35,37 @@
     function watch(ids, callback) {
       ids.forEach(id => {
         const el = $(id);
+        if (!el) return;
         ['input', 'change', 'keyup', 'blur'].forEach(ev => el.addEventListener(ev, callback));
       });
     }
+    const bindClick = (id, callback) => {
+      const el = $(id);
+      if (el) el.addEventListener('click', callback);
+    };
     function calculatePork() {
       const q = parseAmount(trim('kg'));
       const ok = Number.isFinite(q) && q > 0 && q <= 100000;
-      const delivery = $('modo').value === 'entrega';
+      const delivery = $('modo') ? $('modo').value === 'entrega' : false;
       const s = ok ? round(q * 210) : 0;
       const fee = ok && delivery && q <= 10 ? 100 : 0;
-      $('q-kg').textContent = ok ? q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg' : '—';
-      $('subtotal').textContent = ok ? money(s) : '—';
-      $('taxa').textContent = ok ? (delivery ? (fee === 0 ? 'Grátis' : money(fee)) : 'Sem entrega') : '—';
-      $('total-carne').textContent = ok ? money(s + fee) : '—';
-      $('live-kg').textContent = ok ? q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg' : '—';
-      $('live-pork').textContent = ok ? money(s + fee) : '—';
-      $('status-carne').textContent = ok ? 'Total actualizado automaticamente: ' + money(s + fee) : 'Introduz uma quantidade válida, maior que zero.';
-      $('carne-formula').textContent = ok ?
+      setText('q-kg', ok ? q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg' : '—');
+      setText('subtotal', ok ? money(s) : '—');
+      setText('taxa', ok ? (delivery ? (fee === 0 ? 'Grátis' : money(fee)) : 'Sem entrega') : '—');
+      setText('total-carne', ok ? money(s + fee) : '—');
+      setText('live-kg', ok ? q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg' : '—');
+      setText('live-pork', ok ? money(s + fee) : '—');
+      setText('status-carne', ok ? 'Total actualizado automaticamente: ' + money(s + fee) : 'Introduz uma quantidade válida, maior que zero.');
+      setText('carne-formula', ok ?
         q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg × 210 MT = ' + money(s) + (delivery ? ' + ' + money(fee) + ' de entrega' : ' (levantamento)') + ' → ' + money(s + fee) :
-        'Valor = quilogramas × 210 MT + entrega, quando aplicável.';
-      $('erro-carne').textContent = '';
+        'Valor = quilogramas × 210 MT + entrega, quando aplicável.');
+      setText('erro-carne', '');
       return ok ? { q, s, fee, delivery, total: round(s + fee) } : null;
     }
     function updatePork() {
       const r = calculatePork();
-      if (!r) { $('enviar-carne').href = '#painel-carne'; return null; }
-      $('enviar-carne').href = whatsUrl([
+      if (!r) { setHref('enviar-carne', '#painel-carne'); return null; }
+      setHref('enviar-carne', whatsUrl([
         'Olá! Quero consultar a disponibilidade de carne de porco nacional.', '',
         'Quantidade: ' + r.q + ' kg', 'Preço por kg: 210 MT',
         'Subtotal: ' + money(r.s),
@@ -59,7 +75,7 @@
         'Bairro/local: ' + (trim('bairro') || 'A informar'),
         'Data pretendida: ' + (trim('data') || 'A combinar'),
         'Observações: ' + (trim('obs') || 'Nenhuma'), '', 'Aguardo confirmação de disponibilidade e do valor final.'
-      ].join('\n'));
+      ].join('\n')));
       return r;
     }
     watch(['kg', 'modo', 'bairro', 'data', 'obs'], updatePork);
@@ -67,17 +83,20 @@
       $('kg').value = this.dataset.kg;
       updatePork();
     }));
-    $('atualizar-carne').addEventListener('click', updatePork);
-    $('enviar-carne').addEventListener('click', function (e) {
+    bindClick('atualizar-carne', updatePork);
+    bindClick('enviar-carne', function (e) {
       if (!updatePork()) {
-        e.preventDefault(); $('erro-carne').textContent = 'Indica uma quantidade válida em quilogramas antes de enviar.';
-        $('kg').focus();
+        e.preventDefault();
+        const errorEl = $('erro-carne');
+        if (errorEl) errorEl.textContent = 'Indica uma quantidade válida em quilogramas antes de enviar.';
+        const kgEl = $('kg');
+        if (kgEl) kgEl.focus();
       }
     });
 
     function updateStamp() {
-      const produto = $('produto').value;
-      const qty = Number($('qtd').value);
+      const produto = $('produto') ? $('produto').value : '';
+      const qty = $('qtd') ? Number($('qtd').value) : 0;
       const qok = Number.isInteger(qty) && qty > 0 && qty <= 100000;
       const modelo = trim('modelo'), arte = trim('arte');
       $('estampa-produto').textContent = produto;
@@ -99,13 +118,16 @@
       return { qty, produto, modelo, arte };
     }
     watch(['produto', 'qtd', 'modelo', 'arte'], updateStamp);
-    $('atualizar-estampa').addEventListener('click', updateStamp);
-    $('enviar-estampa').addEventListener('click', function (e) {
+    bindClick('atualizar-estampa', updateStamp);
+    bindClick('enviar-estampa', function (e) {
       const r = updateStamp();
       if (!r || !r.modelo || !r.arte) {
         e.preventDefault();
-        $('erro-estampa').textContent = 'Indica uma quantidade válida, o modelo/tamanho e a descrição da personalização.';
-        $('erro-estampa').scrollIntoView({ block: 'center' });
+        const errorEl = $('erro-estampa');
+        if (errorEl) {
+          errorEl.textContent = 'Indica uma quantidade válida, o modelo/tamanho e a descrição da personalização.';
+          errorEl.scrollIntoView({ block: 'center' });
+        }
       }
     });
 
@@ -156,8 +178,8 @@
       $('capital').value = this.dataset.capital;
       updateMEI();
     }));
-    $('atualizar-mei').addEventListener('click', updateMEI);
-    $('enviar-mei').addEventListener('click', function (e) {
+    bindClick('atualizar-mei', updateMEI);
+    bindClick('enviar-mei', function (e) {
       const r = updateMEI(); let missing = [];
       if (trim('mei-nome').length < 3) missing.push('nome completo');
       if (!r) missing.push('valor e prazo válidos');
@@ -167,7 +189,14 @@
       if (!$('mei-maior').checked) missing.push('idade mínima');
       if (!$('mei-bi').checked) missing.push('BI válido');
       if (!$('mei-consente').checked) missing.push('autorização de envio');
-      if (missing.length) { e.preventDefault(); $('erro-mei').textContent = 'Falta preencher ou confirmar: ' + missing.join(', ') + '.'; $('erro-mei').scrollIntoView({ block: 'center' }); }
+      if (missing.length) {
+        e.preventDefault();
+        const errorEl = $('erro-mei');
+        if (errorEl) {
+          errorEl.textContent = 'Falta preencher ou confirmar: ' + missing.join(', ') + '.';
+          errorEl.scrollIntoView({ block: 'center' });
+        }
+      }
     });
 
     // Serviço digital: manter a escolha dos cartões e os métodos de pagamento já aprovados.
@@ -175,7 +204,7 @@
     function selectedDigital() { const radio = document.querySelector('input[name="digital-plataforma"]:checked'); return radio ? radio.value : ''; }
     function updateDigitalLink() {
       const platform = selectedDigital();
-      const months = Number($('digital-periodo').value) || 0;
+      const months = $('digital-periodo') ? Number($('digital-periodo').value) || 0 : 0;
       const unit = digitalPrices[platform];
       const payRadio = document.querySelector('input[name="digital-pagamento-radio"]:checked');
       const payment = payRadio ? payRadio.value : '';
@@ -200,10 +229,19 @@
       ['input', 'change', 'click'].forEach(ev => el.addEventListener(ev, updateDigitalLink));
     });
     watch(['digital-periodo', 'digital-obs'], updateDigitalLink);
-    $('enviar-digital').addEventListener('click', function (e) {
+    bindClick('enviar-digital', function (e) {
       const r = updateDigitalLink();
-      if (!r.platform || !r.months || !r.payment) { e.preventDefault(); $('digital-erro').textContent = 'Escolhe plataforma, meses e método de pagamento.'; $('digital-erro').scrollIntoView({ block: 'center' }); }
-      else $('digital-erro').textContent = '';
+      if (!r.platform || !r.months || !r.payment) {
+        e.preventDefault();
+        const errorEl = $('digital-erro');
+        if (errorEl) {
+          errorEl.textContent = 'Escolhe plataforma, meses e método de pagamento.';
+          errorEl.scrollIntoView({ block: 'center' });
+        }
+      } else {
+        const errorEl = $('digital-erro');
+        if (errorEl) errorEl.textContent = '';
+      }
     });
     document.addEventListener('input', function (e) {
       if (e.target && (e.target.id === 'kg' || e.target.id === 'modo')) updatePork();
