@@ -112,16 +112,18 @@
       justify-content: center;
       gap: 8px;
       border: 0;
-      transition: transform .14s, background .14s
+      transition: transform .14s, background .14s, box-shadow .14s
     }
 
     .solidbtn {
-      background: #247ee1;
-      color: white
+      background: linear-gradient(180deg, #2b8cef 0%, #0f6ed5 100%);
+      color: white;
+      box-shadow: 0 10px 24px rgba(22, 97, 179, .28)
     }
 
     .solidbtn:hover {
-      background: #096bd1
+      background: #096bd1;
+      transform: translateY(-1px)
     }
 
     .outlinebtn {
@@ -209,6 +211,25 @@
       display: flex;
       flex-wrap: wrap;
       gap: 10px
+    }
+
+    .trust-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 0
+    }
+
+    .trust-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .15);
+      color: #e6f2ff;
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700
     }
 
     .hero-bullets {
@@ -716,6 +737,17 @@
     .faq details p {
       margin: 9px 0 0;
       font-size: 13px
+    }
+
+    .trust-notice {
+      margin-top: 18px;
+      background: #fff7e5;
+      border: 1px solid #f0d089;
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: #5b4300;
+      font-size: 13px;
+      line-height: 1.7
     }
 
     footer {
