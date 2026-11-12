@@ -220,6 +220,12 @@
 
     // Serviço digital: manter a escolha dos cartões e os métodos de pagamento já aprovados.
     const digitalPrices = { 'Netflix': 280, 'Amazon Prime Video': 200, 'Spotify': 120, 'Crunchyroll': 180 };
+    const digitalPaymentDetails = {
+      'M-Pesa': 'Titular: Munvera Nunes\nNúmero M-Pesa: 85 681 2121',
+      'e-Mola': 'Titular: Munvera Nunes\nNúmero e-Mola: 86 957 5041',
+      'Millennium bim': 'Titular: Munvera Dias\nConta: 1097527744\nNIB: 000100000109752774457',
+      'Dinheiro': 'Pagamento presencial. Local e horário a confirmar com a empresa.'
+    };
     function selectedDigital() { const radio = document.querySelector('input[name="digital-plataforma"]:checked'); return radio ? radio.value : ''; }
     function applyFastDigitalDefaults() {
       const platformInputs = document.querySelectorAll('input[name="digital-plataforma"]');
@@ -240,6 +246,7 @@
       const unit = digitalPrices[platform];
       const payRadio = document.querySelector('input[name="digital-pagamento-radio"]:checked');
       const payment = payRadio ? payRadio.value : '';
+      const paymentDetails = digitalPaymentDetails[payment] || 'Dados a confirmar com a empresa.';
       const total = unit && months ? unit * months : null;
       const obs = trim('digital-obs');
       const totalEl = $('digital-total');
@@ -261,8 +268,9 @@
         'Preço indicado por mês: ' + (unit ? money(unit) : 'A confirmar'),
         'Total estimado: ' + (total === null ? 'A calcular' : money(total)),
         'Pagamento preferido: ' + (payment || 'A escolher'),
+        'Dados do método de pagamento:\n' + paymentDetails,
         'Observações: ' + (obs || 'Nenhuma'),
-        'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final antes de pagar.'
+        'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final. Vou confirmar os dados com a empresa antes de transferir dinheiro.'
       ].join('\n');
       if (enviarDigitalEl) enviarDigitalEl.href = whatsUrl(msg);
       return { platform, months, payment };
