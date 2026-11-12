@@ -14,7 +14,7 @@
     const money = n => new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(round(n)) + ' MT';
     const trim = id => {
       const el = $(id);
-      return String((el && el.value) || '').trim();
+      return el ? String(el.value || '').trim() : '';
     };
     const whatsUrl = msg => 'https://wa.me/' + WAPP + '?text=' + encodeURIComponent(msg);
     function parseAmount(raw) {
@@ -99,15 +99,23 @@
       const qty = $('qtd') ? Number($('qtd').value) : 0;
       const qok = Number.isInteger(qty) && qty > 0 && qty <= 100000;
       const modelo = trim('modelo'), arte = trim('arte');
-      $('estampa-produto').textContent = produto;
-      $('estampa-quantidade').textContent = qok ? qty + ' unidade' + (qty === 1 ? '' : 's') : '—';
-      $('estampa-modelo').textContent = modelo || 'A informar';
-      $('estampa-arte').textContent = arte ? (arte.length > 85 ? arte.slice(0, 85) + '…' : arte) : 'A informar';
-      $('estampa-total').textContent = 'Sob orçamento';
-      $('status-estampa').textContent = qok ? 'Resumo actualizado para ' + qty + ' unidade' + (qty === 1 ? '' : 's') + '. Preço a confirmar.' : 'Introduz uma quantidade válida.';
-      $('erro-estampa').textContent = '';
-      if (!qok) { $('enviar-estampa').href = '#painel-estampa'; return null; }
-      $('enviar-estampa').href = whatsUrl([
+      const produtoEl = $('estampa-produto');
+      const quantidadeEl = $('estampa-quantidade');
+      const modeloEl = $('estampa-modelo');
+      const arteEl = $('estampa-arte');
+      const totalEl = $('estampa-total');
+      const statusEl = $('status-estampa');
+      const erroEl = $('erro-estampa');
+      const enviarEl = $('enviar-estampa');
+      if (produtoEl) produtoEl.textContent = produto;
+      if (quantidadeEl) quantidadeEl.textContent = qok ? qty + ' unidade' + (qty === 1 ? '' : 's') : '—';
+      if (modeloEl) modeloEl.textContent = modelo || 'A informar';
+      if (arteEl) arteEl.textContent = arte ? (arte.length > 85 ? arte.slice(0, 85) + '…' : arte) : 'A informar';
+      if (totalEl) totalEl.textContent = 'Sob orçamento';
+      if (statusEl) statusEl.textContent = qok ? 'Resumo actualizado para ' + qty + ' unidade' + (qty === 1 ? '' : 's') + '. Preço a confirmar.' : 'Introduz uma quantidade válida.';
+      if (erroEl) erroEl.textContent = '';
+      if (!qok) { if (enviarEl) enviarEl.href = '#painel-estampa'; return null; }
+      if (enviarEl) enviarEl.href = whatsUrl([
         'Olá! Gostaria de pedir orçamento de estampagem.', '',
         'Produto: ' + produto, 'Quantidade: ' + qty,
         'Modelo/tamanho: ' + (modelo || 'A informar'),
@@ -138,31 +146,42 @@
       const rate = .30;
       const perMonth = ok ? round(c * rate) : 0;
       const j = ok ? round(c * rate * m) : 0;
-      $('sim-capital').textContent = ok ? money(c) : '—';
-      $('sim-juros').textContent = ok ? money(j) : '—';
-      $('sim-juros-mes').textContent = ok ? money(perMonth) : '—';
-      $('sim-formula').textContent = ok ?
+      const simCapitalEl = $('sim-capital');
+      const simJurosEl = $('sim-juros');
+      const simJurosMesEl = $('sim-juros-mes');
+      const simFormulaEl = $('sim-formula');
+      const simPrazoEl = $('sim-prazo');
+      const simTotalEl = $('sim-total');
+      const liveInterestEl = $('live-interest');
+      const liveLoanTotalEl = $('live-loan-total');
+      const statusMeiEl = $('status-mei');
+      const erroMeiEl = $('erro-mei');
+      if (simCapitalEl) simCapitalEl.textContent = ok ? money(c) : '—';
+      if (simJurosEl) simJurosEl.textContent = ok ? money(j) : '—';
+      if (simJurosMesEl) simJurosMesEl.textContent = ok ? money(perMonth) : '—';
+      if (simFormulaEl) simFormulaEl.textContent = ok ?
         money(c) + ' × 30% × ' + m + (m === 1 ? ' mês' : ' meses') + ' = ' + money(j) + ' de juros; capital + juros = ' + money(c + j) + '.' :
         'Insere o valor pretendido para veres os juros e o total.';
-      $('sim-prazo').textContent = ok ? m + (m === 1 ? ' mês' : ' meses') : '—';
-      $('sim-total').textContent = ok ? money(c + j) : '—';
-      $('live-interest').textContent = ok ? money(j) : '—';
-      $('live-loan-total').textContent = ok ? money(c + j) : '—';
-      $('status-mei').textContent = ok ? 'Simulação automática: ' + money(j) + ' de juros e ' + money(c + j) + ' de total.' : 'Indica um montante positivo e prazo de 1 a 120 meses.';
-      $('erro-mei').textContent = '';
+      if (simPrazoEl) simPrazoEl.textContent = ok ? m + (m === 1 ? ' mês' : ' meses') : '—';
+      if (simTotalEl) simTotalEl.textContent = ok ? money(c + j) : '—';
+      if (liveInterestEl) liveInterestEl.textContent = ok ? money(j) : '—';
+      if (liveLoanTotalEl) liveLoanTotalEl.textContent = ok ? money(c + j) : '—';
+      if (statusMeiEl) statusMeiEl.textContent = ok ? 'Simulação automática: ' + money(j) + ' de juros e ' + money(c + j) + ' de total.' : 'Indica um montante positivo e prazo de 1 a 120 meses.';
+      if (erroMeiEl) erroMeiEl.textContent = '';
       return ok ? { c, m, j, total: round(c + j) } : null;
     }
     function updateMEI() {
       const r = calculateMEI();
-      if (!r) { $('enviar-mei').href = '#painel-mei'; return null; }
+      const enviarMei = $('enviar-mei');
+      if (!r) { if (enviarMei) enviarMei.href = '#painel-mei'; return null; }
       const msg = [
         'Olá! Gostaria de apresentar um PRÉ-PEDIDO DE INFORMAÇÃO sobre empréstimo à MEI – Juros & Dívidas.', '',
         'Nome completo: ' + (trim('mei-nome') || 'A informar'),
-        'Idade: ' + ($('mei-maior').checked ? '18 anos ou mais confirmado' : 'A confirmar'),
-        'BI válido: ' + ($('mei-bi').checked ? 'Confirmado (sem envio de documento)' : 'A confirmar'),
+        'Idade: ' + ($('mei-maior') && $('mei-maior').checked ? '18 anos ou mais confirmado' : 'A confirmar'),
+        'BI válido: ' + ($('mei-bi') && $('mei-bi').checked ? 'Confirmado (sem envio de documento)' : 'A confirmar'),
         'Zona de residência: ' + (trim('mei-residencia') || 'A informar'),
-        'Comprovativo de residência: ' + ($('mei-comprovativo').value || 'A informar'),
-        'Situação de rendimento: ' + ($('mei-rendimento').value || 'A informar'),
+        'Comprovativo de residência: ' + (($('mei-comprovativo') && $('mei-comprovativo').value) || 'A informar'),
+        'Situação de rendimento: ' + (($('mei-rendimento') && $('mei-rendimento').value) || 'A informar'),
         'Valor pretendido: ' + money(r.c),
         'Prazo pretendido: ' + r.m + (r.m === 1 ? ' mês' : ' meses'),
         'Garantia que poderia apresentar: ' + (trim('mei-garantia') || 'A avaliar com o responsável'),
@@ -170,7 +189,7 @@
         'Total matemático simulado: ' + money(r.total),
         'Observações: ' + (trim('mei-observacoes') || 'Nenhuma'), '', 'Esta mensagem não corresponde a uma oferta nem aprovação de crédito. Solicito informações sobre condições futuras.'
       ].join('\n');
-      $('enviar-mei').href = whatsUrl(msg);
+      if (enviarMei) enviarMei.href = whatsUrl(msg);
       return r;
     }
     watch(['capital', 'meses', 'mei-nome', 'mei-residencia', 'mei-comprovativo', 'mei-rendimento', 'mei-garantia', 'mei-observacoes', 'mei-maior', 'mei-bi', 'mei-consente'], updateMEI);
@@ -210,9 +229,19 @@
       const payment = payRadio ? payRadio.value : '';
       const total = unit && months ? unit * months : null;
       const obs = trim('digital-obs');
-      if (!platform) { $('digital-total').textContent = 'Escolhe uma plataforma para veres o resumo.'; $('digital-total-aviso').textContent = 'Selecciona Netflix, Prime Video, Spotify ou Crunchyroll.'; }
-      else if (!months) { $('digital-total').textContent = platform + ' — ' + unit + ' MT por mês'; $('digital-total-aviso').textContent = 'Escolhe a quantidade de meses para calcular o total.'; }
-      else { $('digital-total').textContent = platform + ' · ' + months + (months === 1 ? ' mês' : ' meses') + ' · ' + money(total); $('digital-total-aviso').textContent = 'Preço indicado: ' + unit + ' MT/mês × ' + months + '.'; }
+      const totalEl = $('digital-total');
+      const totalAvisoEl = $('digital-total-aviso');
+      const enviarDigitalEl = $('enviar-digital');
+      if (!platform) {
+        if (totalEl) totalEl.textContent = 'Escolhe uma plataforma para veres o resumo.';
+        if (totalAvisoEl) totalAvisoEl.textContent = 'Selecciona Netflix, Prime Video, Spotify ou Crunchyroll.';
+      } else if (!months) {
+        if (totalEl) totalEl.textContent = platform + ' — ' + unit + ' MT por mês';
+        if (totalAvisoEl) totalAvisoEl.textContent = 'Escolhe a quantidade de meses para calcular o total.';
+      } else {
+        if (totalEl) totalEl.textContent = platform + ' · ' + months + (months === 1 ? ' mês' : ' meses') + ' · ' + money(total);
+        if (totalAvisoEl) totalAvisoEl.textContent = 'Preço indicado: ' + unit + ' MT/mês × ' + months + '.';
+      }
       const msg = ['Olá! Gostaria de consultar um serviço digital da Quem Poupa, Sempre Tem.',
         'Plataforma: ' + (platform || 'A escolher'),
         'Período: ' + (months ? months + (months === 1 ? ' mês' : ' meses') : 'A escolher'),
@@ -222,7 +251,7 @@
         'Observações: ' + (obs || 'Nenhuma'),
         'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final antes de pagar.'
       ].join('\n');
-      $('enviar-digital').href = whatsUrl(msg);
+      if (enviarDigitalEl) enviarDigitalEl.href = whatsUrl(msg);
       return { platform, months, payment };
     }
     document.querySelectorAll('input[name="digital-plataforma"],input[name="digital-pagamento-radio"]').forEach(el => {
