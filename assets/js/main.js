@@ -221,7 +221,20 @@
     // Serviço digital: manter a escolha dos cartões e os métodos de pagamento já aprovados.
     const digitalPrices = { 'Netflix': 280, 'Amazon Prime Video': 200, 'Spotify': 120, 'Crunchyroll': 180 };
     function selectedDigital() { const radio = document.querySelector('input[name="digital-plataforma"]:checked'); return radio ? radio.value : ''; }
+    function applyFastDigitalDefaults() {
+      const platformInputs = document.querySelectorAll('input[name="digital-plataforma"]');
+      if (platformInputs.length && !document.querySelector('input[name="digital-plataforma"]:checked')) {
+        platformInputs[0].checked = true;
+      }
+      const paymentInputs = document.querySelectorAll('input[name="digital-pagamento-radio"]');
+      if (paymentInputs.length && !document.querySelector('input[name="digital-pagamento-radio"]:checked')) {
+        paymentInputs[0].checked = true;
+      }
+      const periodEl = $('digital-periodo');
+      if (periodEl && !periodEl.value) periodEl.value = '1';
+    }
     function updateDigitalLink() {
+      applyFastDigitalDefaults();
       const platform = selectedDigital();
       const months = $('digital-periodo') ? Number($('digital-periodo').value) || 0 : 0;
       const unit = digitalPrices[platform];
@@ -280,6 +293,7 @@
       if (e.target && (e.target.id === 'kg' || e.target.id === 'modo')) updatePork();
       if (e.target && (e.target.id === 'capital' || e.target.id === 'meses')) updateMEI();
     });
+    applyFastDigitalDefaults();
     updatePork(); updateStamp(); updateMEI(); updateDigitalLink();
     $('calc-browser-warning').hidden = true;
   
