@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07172b">
+  <meta name="description"
+    content="Informações sobre encomendas de carne de porco nacional em Nampula, com preço e condições de entrega.">
+  <title>Carne de porco | Quem Poupa, Sempre Tem</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  <header class="top">
+    <div class="container topin">
+      <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
+        <img src="assets/images/logo.webp" width="310" height="310" decoding="async" alt="">
+        <span><strong>QUEM POUPA,<br>SEMPRE TEM</strong><small>Loja &amp; serviços em Nampula</small></span>
+      </a>
+      <a class="outlinebtn header-contact" href="https://wa.me/258856812121" target="_blank"
+        rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </header>
+  <main class="service-detail-page">
+    <article class="service-detail container">
+      <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
+      <div class="section-label">Produto disponível por encomenda</div>
+      <h1>Carne de porco nacional</h1>
+      <p>Consulta a disponibilidade e prepara a tua encomenda. O pedido só fica confirmado depois de a equipa verificar
+        a quantidade, o local e a data pretendida.</p>
+      <ul class="service-detail-list">
+        <li><strong>Preço indicado</strong><span>210 MT por quilograma</span></li>
+        <li><strong>Entrega</strong><span>100 MT até 10 kg; grátis acima de 10 kg, sujeita à confirmação da área atendida.</span></li>
+        <li><strong>Levantamento</strong><span>Disponível em local e horário a combinar.</span></li>
+        <li><strong>Pagamento</strong><span>Confirma a modalidade e os dados directamente com a equipa antes de pagar.</span></li>
+      </ul>
+      <div class="service-detail-actions">
+        <a class="solidbtn" href="#painel-carne">Preparar encomenda ↗</a>
+        <a class="service-detail-link" href="index.html#servicos">Ver outros serviços</a>
+      </div>
+    </article>
+    <div class="container">
+      <div id="calc-browser-warning" class="calc-browser-warning" role="status">Esta pré-visualização não está a executar os cálculos. Abre o site num navegador com JavaScript activado.</div>
+      <div id="painel-carne" class="panel">
+        <div>
+          <h3>Encomendar carne de porco</h3>
+          <p class="intro">Carne de porco nacional a <strong>210 MT/kg</strong>. A disponibilidade é confirmada
+            individualmente pelo responsável.</p>
+          <div class="form-grid">
+            <div class="field"><label for="kg">Quantidade em kg *</label><input id="kg" inputmode="decimal"
+                type="text" placeholder="Ex.: 1, 2,5 ou 10" autocomplete="off">
+              <div class="quick-values" aria-label="Quantidades rápidas">
+                <button type="button" class="quick-option" data-kg="1">1 kg</button>
+                <button type="button" class="quick-option" data-kg="5">5 kg</button>
+                <button type="button" class="quick-option" data-kg="10">10 kg</button>
+                <button type="button" class="quick-option" data-kg="12">12 kg</button>
+              </div><span class="hint calc-hint">Escreve os quilos ou usa uma das quantidades rápidas. O total é
+                actualizado automaticamente.</span>
+              <div class="instant-result" aria-live="polite"><span>Quantidade: <b id="live-kg">—</b></span><span>Total:
+                  <strong id="live-pork">—</strong></span></div>
+            </div>
+            <div class="field"><label for="modo">Como queres receber?</label><select id="modo">
+                <option value="entrega">Entrega ao domicílio</option>
+                <option value="levantamento">Levantamento a combinar</option>
+              </select></div>
+            <div class="field"><label for="bairro">Bairro / local de entrega</label><input id="bairro" type="text"
+                placeholder="Ex.: Nampula"></div>
+            <div class="field"><label for="data">Data pretendida</label><input id="data" type="date"></div>
+            <div class="field wide"><label for="obs">Observações (opcional)</label><textarea id="obs"
+                placeholder="Se tiveres alguma preferência, escreve aqui."></textarea></div>
+          </div>
+          <p class="hint">Entrega: 100 MT para encomendas até 10 kg. Para quantidades <strong>acima de 10 kg</strong>,
+            a entrega é gratuita, sujeita à confirmação da área atendida.</p>
+          <div class="calc-tools"><button id="atualizar-carne" type="button" class="calc-refresh">↻ Actualizar cálculo
+              da carne</button><span id="status-carne" aria-live="polite">Introduz os quilogramas para
+              calcular.</span></div>
+          <p class="required-note" id="erro-carne" role="alert"></p>
+        </div>
+        <aside class="summary">
+          <div class="eyebrow2">Resumo da encomenda</div>
+          <div class="price-row"><span>Quantidade</span><strong id="q-kg">—</strong></div>
+          <div class="price-row"><span>Preço por kg</span><strong>210 MT</strong></div>
+          <div class="price-row"><span>Subtotal</span><strong id="subtotal">—</strong></div>
+          <div class="price-row"><span>Entrega</span><strong id="taxa">—</strong></div>
+          <div class="price-row total-row"><span><b>Total estimado</b></span><strong id="total-carne">—</strong></div>
+          <div class="calc-explain" id="carne-formula" aria-live="polite">Valor = quilogramas × 210 MT + entrega,
+            quando aplicável.</div>
+          <div class="price-note">O pedido só fica confirmado depois de a empresa verificar disponibilidade, local e
+            data.</div>
+          <a class="solidbtn action" id="enviar-carne"
+            href="https://wa.me/258856812121?text=Ol%C3%A1%21%20Gostaria%20de%20encomendar%20carne%20de%20porco."
+            target="_blank" rel="noopener noreferrer">Enviar pedido no WhatsApp ↗</a>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <script defer src="assets/js/main.js"></script>
+</body>
+
+</html>

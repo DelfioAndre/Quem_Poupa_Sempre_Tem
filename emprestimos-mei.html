@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07172b">
+  <meta name="description"
+    content="Informações e simulação matemática ilustrativa sobre a MEI – Juros & Dívidas.">
+  <title>Informações MEI | Quem Poupa, Sempre Tem</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  <header class="top">
+    <div class="container topin">
+      <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
+        <img src="assets/images/logo.webp" width="310" height="310" decoding="async" alt="">
+        <span><strong>QUEM POUPA,<br>SEMPRE TEM</strong><small>Loja &amp; serviços em Nampula</small></span>
+      </a>
+      <a class="outlinebtn header-contact" href="https://wa.me/258856812121" target="_blank"
+        rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </header>
+  <main class="service-detail-page">
+    <article class="service-detail container">
+      <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
+      <div class="section-label">Informação financeira</div>
+      <h1>Empréstimos MEI</h1>
+      <p>A MEI – Juros &amp; Dívidas ainda se encontra em preparação e regularização. Esta área permite apenas pedir
+        informações e consultar uma simulação matemática ilustrativa.</p>
+      <ul class="service-detail-list">
+        <li><strong>Taxa usada na simulação</strong><span>30% ao mês, com juros simples; não é uma condição de crédito validada.</span></li>
+        <li><strong>O que o cálculo mostra</strong><span>Capital, juros ilustrativos e total matemático para o prazo indicado.</span></li>
+        <li><strong>Estado do pedido</strong><span>É apenas uma manifestação preliminar de interesse, não uma candidatura formal.</span></li>
+        <li><strong>Privacidade</strong><span>Não envies BI, documentos, PIN, palavras-passe ou dados bancários pelo formulário.</span></li>
+      </ul>
+      <p class="service-detail-note">O envio de uma consulta não significa aprovação nem disponibilidade de empréstimo.
+        Qualquer análise ou contratação futura dependerá de verificação pelo responsável e do cumprimento das exigências legais.</p>
+      <div class="service-detail-actions">
+        <a class="solidbtn" href="#painel-mei">Consultar e simular ↗</a>
+        <a class="service-detail-link" href="index.html#servicos">Ver outros serviços</a>
+      </div>
+    </article>
+    <div class="container">
+      <div id="calc-browser-warning" class="calc-browser-warning" role="status">Esta pré-visualização não está a executar os cálculos. Abre o site num navegador com JavaScript activado.</div>
+      <div id="painel-mei" class="panel">
+        <div>
+          <h3>Pedido de empréstimo — MEI</h3>
+          <p class="intro">Preenche os dados essenciais para enviar uma <strong>manifestação preliminar de
+              interesse</strong> à MEI – Juros &amp; Dívidas. Os valores apresentados são apenas simulações. A recepção
+            do formulário não significa aprovação nem disponibilidade do crédito.</p>
+          <div class="loan-note"><svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4m-4 4v2"/></svg><strong>Privacidade:</strong> não introduzas o número do BI, fotografias de
+            documentos, PIN, palavras-passe ou informações bancárias. Os documentos só deverão ser pedidos futuramente
+            por um canal seguro e quando houver enquadramento legal.</div>
+          <div class="form-grid loan-fields">
+            <div class="field wide"><label for="mei-nome">Nome completo *</label><input id="mei-nome" type="text"
+                autocomplete="name" maxlength="120" placeholder="Nome e apelidos" required></div>
+            <div class="field"><label for="capital">Valor pretendido (MT) *</label><input id="capital"
+                inputmode="decimal" type="text" placeholder="Ex.: 1000 ou 2.500" autocomplete="off" required>
+              <div class="quick-values" aria-label="Montantes rápidos">
+                <button type="button" class="quick-option" data-capital="1000">1.000 MT</button>
+                <button type="button" class="quick-option" data-capital="2500">2.500 MT</button>
+                <button type="button" class="quick-option" data-capital="5000">5.000 MT</button>
+              </div><span class="hint calc-hint">Os juros em MT mudam conforme o valor solicitado e o prazo. Taxa
+                ilustrativa: 30% ao mês.</span>
+              <div class="instant-result" aria-live="polite"><span>Juros: <strong id="live-interest">—</strong></span>
+                <span>Total: <strong id="live-loan-total">—</strong></span></div>
+            </div>
+            <div class="field"><label for="meses">Prazo pretendido (meses) *</label><input id="meses" type="number"
+                inputmode="numeric" min="1" max="120" step="1" value="1" required></div>
+            <div class="field wide"><label for="mei-residencia">Bairro / zona onde resides *</label><input
+                id="mei-residencia" type="text" maxlength="100"
+                placeholder="Ex.: Bairro de Nampula (sem morada completa)" required></div>
+            <div class="field"><label for="mei-comprovativo">Comprovativo de residência *</label><select
+                id="mei-comprovativo">
+                <option value="">Selecciona uma opção</option>
+                <option value="Declaração do bairro">Tenho declaração do bairro</option>
+                <option value="Outro comprovativo">Tenho outro comprovativo</option>
+                <option value="Ainda não possuo">Ainda não possuo</option>
+              </select></div>
+            <div class="field"><label for="mei-rendimento">Situação de rendimento *</label><select id="mei-rendimento">
+                <option value="">Selecciona uma opção</option>
+                <option value="Trabalho por conta de outrem">Trabalho por conta de outrem</option>
+                <option value="Negócio próprio">Negócio próprio</option>
+                <option value="Outras fontes de rendimento">Outras fontes de rendimento</option>
+                <option value="Sem rendimento declarado">Sem rendimento declarado</option>
+                <option value="Prefiro explicar ao responsável">Prefiro explicar ao responsável</option>
+              </select></div>
+            <div class="field wide"><label for="mei-garantia">Garantia que poderias apresentar (se
+                aplicável)</label><input id="mei-garantia" type="text" maxlength="140"
+                placeholder="Ex.: bem disponível / ainda não tenho garantia definida"></div>
+            <div class="field wide"><label for="mei-observacoes">Informações adicionais (opcional)</label><textarea
+                id="mei-observacoes" maxlength="450"
+                placeholder="Indica informações relevantes, sem incluir dados bancários ou números de documentos."></textarea>
+            </div>
+            <div class="field wide"><label class="loan-check"><input id="mei-maior" type="checkbox"> <span>Confirmo que
+                  tenho <strong>18 anos ou mais</strong>. *</span></label></div>
+            <div class="field wide"><label class="loan-check"><input id="mei-bi" type="checkbox"> <span>Confirmo que
+                  possuo <strong>BI válido</strong> (não é necessário enviá-lo agora). *</span></label></div>
+            <div class="field wide"><label class="loan-check"><input id="mei-consente" type="checkbox"> <span>Autorizo
+                  a inclusão destes dados numa mensagem de WhatsApp dirigida à empresa. Compreendo que não se trata de
+                  uma aprovação de crédito. *</span></label></div>
+          </div>
+          <p class="hint">A garantia será avaliada conforme o valor e o risco. A análise, documentação e eventual
+            contratação exigem verificação pelo responsável e cumprimento das exigências legais.</p>
+          <div class="calc-tools"><button id="atualizar-mei" type="button" class="calc-refresh">↻ Actualizar simulação
+              MEI</button><span id="status-mei" aria-live="polite">Introduz valor e prazo para simular.</span></div>
+          <p class="required-note" id="erro-mei" role="alert"></p>
+        </div>
+        <aside class="summary">
+          <div class="eyebrow2">Simulação do valor solicitado</div>
+          <div class="price-row"><span>Capital</span><strong id="sim-capital">—</strong></div>
+          <div class="price-row"><span>Juros simples (30% ao mês)</span><strong id="sim-juros">—</strong></div>
+          <div class="price-row"><span>Juros por mês (ilustrativos)</span><strong id="sim-juros-mes">—</strong></div>
+          <div class="price-row"><span>Prazo</span><strong id="sim-prazo">—</strong></div>
+          <div class="price-row total-row"><span><b>Total simulado</b></span><strong id="sim-total">—</strong></div>
+          <div class="calc-explain" id="sim-formula" aria-live="polite">Insere o valor pretendido para veres os juros
+            e o total.</div>
+          <div class="price-note">A MEI ainda se encontra em preparação e regularização. O envio é um
+            <strong>pré-pedido de informação</strong>, não uma candidatura formal, oferta ou aprovação de empréstimo.
+            A taxa é ilustrativa e não está validada como condição de crédito disponível.</div>
+          <a class="solidbtn action" id="enviar-mei"
+            href="https://wa.me/258856812121?text=Ol%C3%A1%21%20Quero%20informa%C3%A7%C3%B5es%20sobre%20a%20MEI."
+            target="_blank" rel="noopener noreferrer">Enviar pedido de empréstimo ↗</a>
+          <div class="loan-under">Abre o WhatsApp Business da empresa com os dados preenchidos. <strong>Revê e toca em
+              Enviar no WhatsApp</strong> para concluir.</div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <script defer src="assets/js/main.js"></script>
+</body>
+
+</html>

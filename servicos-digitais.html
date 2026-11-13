@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#07172b">
+  <meta name="description"
+    content="Consulta os valores indicativos e condições dos serviços digitais disponíveis pela Quem Poupa, Sempre Tem.">
+  <title>Serviços digitais | Quem Poupa, Sempre Tem</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+  <header class="top">
+    <div class="container topin">
+      <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
+        <img src="assets/images/logo.webp" width="310" height="310" decoding="async" alt="">
+        <span><strong>QUEM POUPA,<br>SEMPRE TEM</strong><small>Loja &amp; serviços em Nampula</small></span>
+      </a>
+      <a class="outlinebtn header-contact" href="https://wa.me/258856812121" target="_blank"
+        rel="noopener noreferrer">WhatsApp</a>
+    </div>
+  </header>
+  <main class="service-detail-page">
+    <article class="service-detail container">
+      <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
+      <div class="section-label">Entretenimento digital</div>
+      <h1>Plataformas e valores indicativos</h1>
+      <p>Consulta a plataforma e o período pretendido. A equipa confirma disponibilidade, modalidade autorizada, preço
+        final e condições antes de qualquer pagamento.</p>
+      <ul class="service-detail-list">
+        <li><strong>Spotify</strong><span>120 MT por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
+        <li><strong>Crunchyroll</strong><span>180 MT por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
+        <li><strong>Netflix</strong><span>280 MT — valor de campanha anterior; confirma o valor actual.</span></li>
+        <li><strong>Prime Video</strong><span>200 MT — valor de campanha anterior; confirma o valor actual.</span></li>
+      </ul>
+      <p class="service-detail-note">O site não activa subscrições nem processa pagamentos. Não partilhes palavras-passe
+        ou códigos de acesso. Os serviços só podem ser comercializados em modalidades autorizadas pelas plataformas.</p>
+      <div class="service-detail-actions">
+        <a class="solidbtn" href="#painel-digital">Consultar serviço digital ↗</a>
+        <a class="service-detail-link" href="index.html#servicos">Ver outros serviços</a>
+      </div>
+    </article>
+    <div class="container">
+      <div id="calc-browser-warning" class="calc-browser-warning" role="status">Esta pré-visualização não está a executar os cálculos. Abre o site num navegador com JavaScript activado.</div>
+      <div class="panel" id="painel-digital">
+        <div>
+          <h3>Entretenimento digital</h3>
+          <p class="intro">Valores indicativos por mês: <strong>Spotify, 120 MT</strong> e
+            <strong>Crunchyroll, 180 MT</strong>. Os valores de Netflix e Prime Video são de campanhas anteriores.
+            Confirma preço, período, condições e disponibilidade antes de pagar.</p>
+          <fieldset class="digital-picker">
+            <legend>Escolhe a plataforma — toca num cartão</legend>
+            <div aria-label="Escolhe uma plataforma digital" class="digital-platforms" id="digital-platforms">
+              <label class="platform netflix" for="plataforma-0"><input type="radio" id="plataforma-0"
+                  name="digital-plataforma" value="Netflix"><span class="platform-letter"
+                  aria-hidden="true">N</span><span class="platform-copy"><b>Netflix</b><span
+                    class="platform-price">280 MT</span><small>Campanha anterior · confirmar o valor
+                    actual</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
+              <label class="platform prime" for="plataforma-1"><input type="radio" id="plataforma-1"
+                  name="digital-plataforma" value="Amazon Prime Video"><span class="platform-letter"
+                  aria-hidden="true">▶</span><span class="platform-copy"><b>Amazon Prime Video</b><span
+                    class="platform-price">200 MT</span><small>Campanha anterior · confirmar o valor
+                    actual</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
+              <label class="platform spotify" for="plataforma-2"><input type="radio" id="plataforma-2"
+                  name="digital-plataforma" value="Spotify" checked><span class="platform-letter"
+                  aria-hidden="true">♫</span><span class="platform-copy"><b>Spotify</b><span
+                    class="platform-price">120 MT</span><small>Preço indicado · modalidade e prazo a
+                    confirmar</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
+              <label class="platform crunchyroll" for="plataforma-3"><input type="radio" id="plataforma-3"
+                  name="digital-plataforma" value="Crunchyroll"><span class="platform-letter"
+                  aria-hidden="true">✦</span><span class="platform-copy"><b>Crunchyroll</b><span
+                    class="platform-price">180 MT</span><small>Preço indicado · modalidade e prazo a
+                    confirmar</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
+            </div>
+          </fieldset>
+          <div class="form-grid digital-fields">
+            <div class="field wide"><label for="digital-periodo">Período desejado</label><select id="digital-periodo"
+                required>
+                <option value="">Escolhe o número de meses</option>
+                <option value="1" selected>1 mês</option>
+                <option value="2">2 meses</option>
+                <option value="3">3 meses</option>
+                <option value="6">6 meses</option>
+                <option value="12">12 meses</option>
+              </select></div>
+            <fieldset class="field wide payment-fieldset" aria-labelledby="titulo-metodo-pagamento">
+              <legend id="titulo-metodo-pagamento">Método de pagamento preferido</legend>
+              <p class="pay-instruction">Toca numa opção. Os dados para pagamento aparecem logo abaixo do nome
+                escolhido.</p>
+              <div class="payment-options">
+                <label class="pay-option">
+                  <input type="radio" name="digital-pagamento-radio" value="M-Pesa" aria-label="M-Pesa Vodacom" checked>
+                  <span class="pay-title"><span>M-Pesa (Vodacom)</span><span class="pay-arrow">⌄</span></span>
+                  <span class="pay-details">
+                    <span class="pay-data-label">NOME DO TITULAR</span><strong>Munvera Nunes</strong>
+                    <span class="pay-data-label">NÚMERO M-PESA PARA TRANSFERÊNCIA</span><strong class="pay-number">85
+                      681 2121</strong>
+                  </span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="digital-pagamento-radio" value="e-Mola" aria-label="e-Mola Movitel">
+                  <span class="pay-title"><span>e-Mola (Movitel)</span><span class="pay-arrow">⌄</span></span>
+                  <span class="pay-details">
+                    <span class="pay-data-label">NOME DO TITULAR</span><strong>Munvera Nunes</strong>
+                    <span class="pay-data-label">NÚMERO e-MOLA PARA TRANSFERÊNCIA</span><strong class="pay-number">86
+                      957 5041</strong>
+                  </span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="digital-pagamento-radio" value="Millennium bim"
+                    aria-label="Millennium bim transferência bancária">
+                  <span class="pay-title"><span>Millennium bim (Banco)</span><span class="pay-arrow">⌄</span></span>
+                  <span class="pay-details">
+                    <span class="pay-data-label">NOME DO TITULAR</span><strong>Munvera Dias</strong>
+                    <span class="pay-data-label">NÚMERO DA CONTA</span><strong class="pay-number">1097527744</strong>
+                    <span class="pay-data-label">NIB</span><strong class="pay-number">000100000109752774457</strong>
+                  </span>
+                </label>
+                <label class="pay-option">
+                  <input type="radio" name="digital-pagamento-radio" value="Dinheiro"
+                    aria-label="Dinheiro presencial">
+                  <span class="pay-title"><span>Dinheiro presencial</span><span class="pay-arrow">⌄</span></span>
+                  <span class="pay-details"><strong>Pagamento presencial</strong><span>O local e o horário serão
+                      confirmados pela empresa.</span></span>
+                </label>
+              </div>
+              <p class="pay-instruction">Estes são dados informativos. Aguarda a confirmação do pedido antes de
+                transferir dinheiro.</p>
+            </fieldset>
+            <div class="field wide">
+              <div class="digitalselected" aria-live="polite" style="display:block">
+                <span>Resumo do teu pedido</span>
+                <div style="font-size:1.1rem;font-weight:800;margin-top:8px" id="digital-total">Escolhe uma plataforma
+                  e o número de meses.</div>
+                <small id="digital-total-aviso">O valor será apresentado automaticamente depois de fazeres a
+                  escolha.</small>
+                <small style="display:block;margin-top:10px">Os dados para transferir aparecem dentro do método de
+                  pagamento que seleccionares acima.</small>
+                <small style="display:block;margin-top:10px">Confirma os dados com a empresa antes de qualquer
+                  transferência. O site não processa nem confirma pagamentos.</small>
+              </div>
+            </div>
+            <div class="field wide">
+              <p id="digital-erro" role="alert" aria-live="polite" style="color:#a6292d;font-weight:700;margin:0"></p>
+            </div>
+            <div class="field wide"><label for="digital-obs">Pergunta ou preferência (opcional)</label><textarea
+                id="digital-obs" maxlength="300"
+                placeholder="Ex.: Gostaria de conhecer as opções disponíveis e as formas de pagamento."></textarea>
+            </div>
+          </div>
+          <p class="hint">Não coloques palavras-passe, códigos de acesso ou dados bancários neste formulário. O site
+            apenas encaminha consultas para o WhatsApp e não activa subscrições. Serviços digitais só podem ser
+            comercializados em modalidades autorizadas pelas plataformas.</p>
+        </div>
+        <aside class="summary">
+          <div class="eyebrow2">Atendimento personalizado</div>
+          <div class="digital-summary-icon" aria-hidden="true"><svg class="icon-svg" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="m10 8 5 2.5-5 2.5V8Zm-3 13h10m-5-4v4"/></svg></div>
+          <h4>Selecciona o serviço e o período</h4>
+          <p class="info-desc">Escolhe a plataforma, os meses e o pagamento preferido. O total estimado muda
+            automaticamente; a empresa confirma a disponibilidade e o valor final.</p>
+          <div class="price-note">Netflix: 280 MT e Prime Video: 200 MT são valores de campanhas anteriores. Spotify:
+            120 MT e Crunchyroll: 180 MT são valores indicados pela empresa. A duração, disponibilidade e condições
+            devem ser confirmadas antes de qualquer compra.</div>
+          <a id="enviar-digital" class="solidbtn action"
+            href="https://wa.me/258856812121?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20os%20servi%C3%A7os%20digitais."
+            target="_blank" rel="noopener noreferrer">Consultar pelo WhatsApp ↗</a>
+          <div class="loan-under">A mensagem abre no WhatsApp. Confirma o envio para contactar a empresa.</div>
+        </aside>
+      </div>
+    </div>
+  </main>
+  <script defer src="assets/js/main.js"></script>
+</body>
+
+</html>

@@ -293,6 +293,15 @@
         if (errorEl) errorEl.textContent = '';
       }
     });
+    function updateActiveTab() {
+      const hash = window.location.hash || '#painel-carne';
+      const activeTab = document.querySelector('.pilltab[href="' + hash + '"]') || document.querySelector('.pilltab[href="#painel-carne"]');
+      document.querySelectorAll('.pilltab').forEach(tab => {
+        const isActive = tab === activeTab;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+    }
     document.addEventListener('input', function (e) {
       if (e.target && (e.target.id === 'kg' || e.target.id === 'modo')) updatePork();
       if (e.target && (e.target.id === 'capital' || e.target.id === 'meses')) updateMEI();
@@ -301,7 +310,10 @@
       if (e.target && (e.target.id === 'kg' || e.target.id === 'modo')) updatePork();
       if (e.target && (e.target.id === 'capital' || e.target.id === 'meses')) updateMEI();
     });
+    window.addEventListener('hashchange', updateActiveTab);
     applyFastDigitalDefaults();
     updatePork(); updateStamp(); updateMEI(); updateDigitalLink();
-    $('calc-browser-warning').hidden = true;
+    updateActiveTab();
+    const calcBrowserWarning = $('calc-browser-warning');
+    if (calcBrowserWarning) calcBrowserWarning.hidden = true;
   
