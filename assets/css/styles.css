@@ -212,10 +212,8 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 45px;
+      grid-template-columns: minmax(0, 1fr);
       align-items: center;
-      min-height: 520px;
       padding: 54px 0 70px;
       position: relative;
       z-index: 1
@@ -306,57 +304,6 @@
 
     .hero-bullets b {
       color: #8ce0b8
-    }
-
-    .hero-image {
-      position: relative
-    }
-
-    .hero-image img {
-      width: 100%;
-      height: 365px;
-      object-fit: cover;
-      object-position: center;
-      border-radius: 24px;
-      border: 5px solid #ffffff15;
-      box-shadow: 0 28px 65px #01070f65;
-      transition: transform .35s ease, box-shadow .35s ease, filter .35s ease
-    }
-
-    .hero-image:hover img {
-      transform: scale(1.04);
-      filter: saturate(1.08)
-    }
-
-    .float-card {
-      position: absolute;
-      bottom: -18px;
-      left: -23px;
-      background: white;
-      color: var(--ink);
-      border-radius: 16px;
-      box-shadow: 0 20px 50px #0005;
-      padding: 15px 19px;
-      min-width: 205px
-    }
-
-    .float-card small {
-      color: #65778c;
-      font-size: 12px;
-      display: block
-    }
-
-    .float-card strong {
-      display: block;
-      font-size: 24px;
-      margin: 2px 0;
-      color: #0c4e9d;
-      letter-spacing: -.035em
-    }
-
-    .float-card span {
-      font-size: 11px;
-      color: #4e6176
     }
 
     .stats-strip {
@@ -963,15 +910,6 @@
         font-size: 12px
       }
 
-      .hero-grid {
-        gap: 26px;
-        min-height: 490px
-      }
-
-      .hero-image img {
-        height: 310px
-      }
-
       .panel {
         grid-template-columns: 1fr
       }
@@ -1060,27 +998,6 @@
       .hero-actions .solidbtn,
       .hero-actions .outlinebtn {
         flex: 1
-      }
-
-      .hero-image {
-        margin: 28px auto 0;
-        max-width: 440px
-      }
-
-      .hero-image img {
-        height: 218px
-      }
-
-      .float-card {
-        left: auto;
-        right: 10px;
-        bottom: -21px;
-        min-width: 180px;
-        padding: 11px 15px
-      }
-
-      .float-card strong {
-        font-size: 20px
       }
 
       .hero-bullets {
