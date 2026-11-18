@@ -74,7 +74,7 @@
         'Total estimado: ' + money(r.total),
         'Bairro/local: ' + (trim('bairro') || 'A informar'),
         'Data pretendida: ' + (trim('data') || 'A combinar'),
-        'Observações: ' + (trim('obs') || 'Nenhuma'), '', 'Aguardo confirmação de disponibilidade e do valor final.'
+        'Observações: ' + (trim('obs') || 'Nenhuma')
       ].join('\n')));
       return r;
     }
@@ -187,7 +187,8 @@
         'Garantia que poderia apresentar: ' + (trim('mei-garantia') || 'A avaliar com o responsável'),
         'Simulação ilustrativa de juros simples (30% ao mês): ' + money(r.j),
         'Total matemático simulado: ' + money(r.total),
-        'Observações: ' + (trim('mei-observacoes') || 'Nenhuma'), '', 'Esta mensagem não corresponde a uma oferta nem aprovação de crédito. Solicito informações sobre condições futuras.'
+        'Esta mensagem não corresponde a uma oferta nem aprovação de crédito. Solicito informações sobre condições futuras.',
+        'Observações: ' + (trim('mei-observacoes') || 'Nenhuma')
       ].join('\n');
       if (enviarMei) enviarMei.href = whatsUrl(msg);
       return r;
@@ -269,8 +270,8 @@
         'Total estimado: ' + (total === null ? 'A calcular' : money(total)),
         'Pagamento preferido: ' + (payment || 'A escolher'),
         'Dados do método de pagamento:\n' + paymentDetails,
-        'Observações: ' + (obs || 'Nenhuma'),
-        'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final. Vou confirmar os dados com a empresa antes de transferir dinheiro.'
+        'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final. Vou confirmar os dados com a empresa antes de transferir dinheiro.',
+        'Observações: ' + (obs || 'Nenhuma')
       ].join('\n');
       if (enviarDigitalEl) enviarDigitalEl.href = whatsUrl(msg);
       return { platform, months, payment };
