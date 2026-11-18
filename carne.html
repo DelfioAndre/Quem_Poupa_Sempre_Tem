@@ -7,11 +7,17 @@
   <meta name="theme-color" content="#07172b">
   <meta name="description"
     content="Informações sobre encomendas de carne de porco nacional em Nampula, com preço e condições de entrega.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Carne de porco nacional em Nampula | Quem Poupa, Sempre Tem">
+  <meta property="og:description"
+    content="Informações sobre encomendas de carne de porco nacional em Nampula, com preço e condições de entrega.">
+  <meta property="og:site_name" content="Quem Poupa, Sempre Tem">
   <title>Carne de porco | Quem Poupa, Sempre Tem</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
   <header class="top">
     <div class="container topin">
       <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
@@ -22,7 +28,7 @@
         rel="noopener noreferrer">WhatsApp</a>
     </div>
   </header>
-  <main class="service-detail-page">
+  <main id="conteudo" class="service-detail-page" tabindex="-1">
     <article class="service-detail container">
       <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
       <div class="section-label">Produto disponível por encomenda</div>
@@ -30,8 +36,10 @@
       <p>Consulta a disponibilidade e prepara a tua encomenda. O pedido só fica confirmado depois de a equipa verificar
         a quantidade, o local e a data pretendida.</p>
       <ul class="service-detail-list">
-        <li><strong>Preço indicado</strong><span>210 MT por quilograma</span></li>
-        <li><strong>Entrega</strong><span>100 MT até 10 kg; grátis acima de 10 kg, sujeita à confirmação da área atendida.</span></li>
+        <li><strong>Preço indicado</strong><span><span data-catalog-value="porkPerKg">Consultar valor</span> por quilograma</span></li>
+        <li><strong>Entrega</strong><span><span data-catalog-value="deliveryFee">Consultar valor</span> até <span
+              data-catalog-value="deliveryLimitKg">consultar</span> kg; grátis acima de <span
+              data-catalog-value="deliveryLimitKg">consultar</span> kg, sujeita à confirmação da área atendida.</span></li>
         <li><strong>Levantamento</strong><span>Disponível em local e horário a combinar.</span></li>
         <li><strong>Pagamento</strong><span>Confirma a modalidade e os dados directamente com a equipa antes de pagar.</span></li>
       </ul>
@@ -45,7 +53,8 @@
       <div id="painel-carne" class="panel">
         <div>
           <h3>Encomendar carne de porco</h3>
-          <p class="intro">Carne de porco nacional a <strong>210 MT/kg</strong>. A disponibilidade é confirmada
+          <p class="intro">Carne de porco nacional a <strong><span
+                data-catalog-value="porkPerKg">Consultar valor</span>/kg</strong>. A disponibilidade é confirmada
             individualmente pelo responsável.</p>
           <div class="form-grid">
             <div class="field"><label for="kg">Quantidade em kg *</label><input id="kg" inputmode="decimal"
@@ -70,7 +79,9 @@
             <div class="field wide"><label for="obs">Observações (opcional)</label><textarea id="obs"
                 placeholder="Se tiveres alguma preferência, escreve aqui."></textarea></div>
           </div>
-          <p class="hint">Entrega: 100 MT para encomendas até 10 kg. Para quantidades <strong>acima de 10 kg</strong>,
+          <p class="hint">Entrega: <span data-catalog-value="deliveryFee">Consultar valor</span> para encomendas até
+            <span data-catalog-value="deliveryLimitKg">consultar</span> kg. Para quantidades <strong>acima de
+              <span data-catalog-value="deliveryLimitKg">consultar</span> kg</strong>,
             a entrega é gratuita, sujeita à confirmação da área atendida.</p>
           <div class="calc-tools"><button id="atualizar-carne" type="button" class="calc-refresh">↻ Actualizar cálculo
               da carne</button><span id="status-carne" aria-live="polite">Introduz os quilogramas para
@@ -80,11 +91,11 @@
         <aside class="summary">
           <div class="eyebrow2">Resumo da encomenda</div>
           <div class="price-row"><span>Quantidade</span><strong id="q-kg">—</strong></div>
-          <div class="price-row"><span>Preço por kg</span><strong>210 MT</strong></div>
+          <div class="price-row"><span>Preço por kg</span><strong data-catalog-value="porkPerKg">Consultar valor</strong></div>
           <div class="price-row"><span>Subtotal</span><strong id="subtotal">—</strong></div>
           <div class="price-row"><span>Entrega</span><strong id="taxa">—</strong></div>
           <div class="price-row total-row"><span><b>Total estimado</b></span><strong id="total-carne">—</strong></div>
-          <div class="calc-explain" id="carne-formula" aria-live="polite">Valor = quilogramas × 210 MT + entrega,
+          <div class="calc-explain" id="carne-formula" aria-live="polite">Valor = quilogramas × preço por kg + entrega,
             quando aplicável.</div>
           <div class="price-note">O pedido só fica confirmado depois de a empresa verificar disponibilidade, local e
             data.</div>

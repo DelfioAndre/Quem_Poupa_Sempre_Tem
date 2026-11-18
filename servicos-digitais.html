@@ -7,11 +7,17 @@
   <meta name="theme-color" content="#07172b">
   <meta name="description"
     content="Consulta os valores indicativos e condições dos serviços digitais disponíveis pela Quem Poupa, Sempre Tem.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Serviços digitais | Quem Poupa, Sempre Tem">
+  <meta property="og:description"
+    content="Consulta os valores indicativos e condições dos serviços digitais disponíveis pela Quem Poupa, Sempre Tem.">
+  <meta property="og:site_name" content="Quem Poupa, Sempre Tem">
   <title>Serviços digitais | Quem Poupa, Sempre Tem</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
   <header class="top">
     <div class="container topin">
       <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
@@ -22,7 +28,7 @@
         rel="noopener noreferrer">WhatsApp</a>
     </div>
   </header>
-  <main class="service-detail-page">
+  <main id="conteudo" class="service-detail-page" tabindex="-1">
     <article class="service-detail container">
       <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
       <div class="section-label">Entretenimento digital</div>
@@ -30,10 +36,10 @@
       <p>Consulta a plataforma e o período pretendido. A equipa confirma disponibilidade, modalidade autorizada, preço
         final e condições antes de qualquer pagamento.</p>
       <ul class="service-detail-list">
-        <li><strong>Spotify</strong><span>120 MT por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
-        <li><strong>Crunchyroll</strong><span>180 MT por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
-        <li><strong>Netflix</strong><span>280 MT — valor de campanha anterior; confirma o valor actual.</span></li>
-        <li><strong>Prime Video</strong><span>200 MT — valor de campanha anterior; confirma o valor actual.</span></li>
+        <li><strong>Spotify</strong><span><span data-catalog-value="spotify">Consultar valor</span> por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
+        <li><strong>Crunchyroll</strong><span><span data-catalog-value="crunchyroll">Consultar valor</span> por mês — valor indicado pela empresa, sujeito a confirmação.</span></li>
+        <li><strong>Netflix</strong><span><span data-catalog-value="netflix">Consultar valor</span> — valor de campanha anterior; confirma o valor actual.</span></li>
+        <li><strong>Prime Video</strong><span><span data-catalog-value="primeVideo">Consultar valor</span> — valor de campanha anterior; confirma o valor actual.</span></li>
       </ul>
       <p class="service-detail-note">O site não activa subscrições nem processa pagamentos. Não partilhes palavras-passe
         ou códigos de acesso. Os serviços só podem ser comercializados em modalidades autorizadas pelas plataformas.</p>
@@ -47,8 +53,9 @@
       <div class="panel" id="painel-digital">
         <div>
           <h3>Entretenimento digital</h3>
-          <p class="intro">Valores indicativos por mês: <strong>Spotify, 120 MT</strong> e
-            <strong>Crunchyroll, 180 MT</strong>. Os valores de Netflix e Prime Video são de campanhas anteriores.
+          <p class="intro">Valores indicativos por mês: <strong>Spotify, <span
+                data-catalog-value="spotify">consultar valor</span></strong> e
+            <strong>Crunchyroll, <span data-catalog-value="crunchyroll">consultar valor</span></strong>. Os valores de Netflix e Prime Video são de campanhas anteriores.
             Confirma preço, período, condições e disponibilidade antes de pagar.</p>
           <fieldset class="digital-picker">
             <legend>Escolhe a plataforma — toca num cartão</legend>
@@ -56,22 +63,22 @@
               <label class="platform netflix" for="plataforma-0"><input type="radio" id="plataforma-0"
                   name="digital-plataforma" value="Netflix"><span class="platform-letter"
                   aria-hidden="true">N</span><span class="platform-copy"><b>Netflix</b><span
-                    class="platform-price">280 MT</span><small>Campanha anterior · confirmar o valor
+                    class="platform-price" data-catalog-value="netflix">Consultar valor</span><small>Campanha anterior · confirmar o valor
                     actual</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
               <label class="platform prime" for="plataforma-1"><input type="radio" id="plataforma-1"
                   name="digital-plataforma" value="Amazon Prime Video"><span class="platform-letter"
                   aria-hidden="true">▶</span><span class="platform-copy"><b>Amazon Prime Video</b><span
-                    class="platform-price">200 MT</span><small>Campanha anterior · confirmar o valor
+                    class="platform-price" data-catalog-value="primeVideo">Consultar valor</span><small>Campanha anterior · confirmar o valor
                     actual</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
               <label class="platform spotify" for="plataforma-2"><input type="radio" id="plataforma-2"
                   name="digital-plataforma" value="Spotify" checked><span class="platform-letter"
                   aria-hidden="true">♫</span><span class="platform-copy"><b>Spotify</b><span
-                    class="platform-price">120 MT</span><small>Preço indicado · modalidade e prazo a
+                    class="platform-price" data-catalog-value="spotify">Consultar valor</span><small>Preço indicado · modalidade e prazo a
                     confirmar</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
               <label class="platform crunchyroll" for="plataforma-3"><input type="radio" id="plataforma-3"
                   name="digital-plataforma" value="Crunchyroll"><span class="platform-letter"
                   aria-hidden="true">✦</span><span class="platform-copy"><b>Crunchyroll</b><span
-                    class="platform-price">180 MT</span><small>Preço indicado · modalidade e prazo a
+                    class="platform-price" data-catalog-value="crunchyroll">Consultar valor</span><small>Preço indicado · modalidade e prazo a
                     confirmar</small></span><span class="platform-tick" aria-hidden="true">✓</span></label>
             </div>
           </fieldset>
@@ -143,7 +150,7 @@
               </div>
             </div>
             <div class="field wide">
-              <p id="digital-erro" role="alert" aria-live="polite" style="color:#a6292d;font-weight:700;margin:0"></p>
+              <p class="required-note" id="digital-erro" role="alert"></p>
             </div>
             <div class="field wide"><label for="digital-obs">Pergunta ou preferência (opcional)</label><textarea
                 id="digital-obs" maxlength="300"
@@ -160,8 +167,10 @@
           <h4>Selecciona o serviço e o período</h4>
           <p class="info-desc">Escolhe a plataforma, os meses e o pagamento preferido. O total estimado muda
             automaticamente; a empresa confirma a disponibilidade e o valor final.</p>
-          <div class="price-note">Netflix: 280 MT e Prime Video: 200 MT são valores de campanhas anteriores. Spotify:
-            120 MT e Crunchyroll: 180 MT são valores indicados pela empresa. A duração, disponibilidade e condições
+          <div class="price-note">Netflix: <span data-catalog-value="netflix">consultar valor</span> e Prime Video:
+            <span data-catalog-value="primeVideo">consultar valor</span> são valores de campanhas anteriores. Spotify:
+            <span data-catalog-value="spotify">consultar valor</span> e Crunchyroll:
+            <span data-catalog-value="crunchyroll">consultar valor</span> são valores indicados pela empresa. A duração, disponibilidade e condições
             devem ser confirmadas antes de qualquer compra.</div>
           <a id="enviar-digital" class="solidbtn action"
             href="https://wa.me/258856812121?text=Ol%C3%A1%21%20Gostaria%20de%20consultar%20os%20servi%C3%A7os%20digitais."

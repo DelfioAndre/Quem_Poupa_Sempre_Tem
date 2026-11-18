@@ -7,11 +7,17 @@
   <meta name="theme-color" content="#07172b">
   <meta name="description"
     content="Informações e simulação matemática ilustrativa sobre a MEI – Juros & Dívidas.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Informações MEI | Quem Poupa, Sempre Tem">
+  <meta property="og:description"
+    content="Informações e simulação matemática ilustrativa sobre a MEI – Juros & Dívidas.">
+  <meta property="og:site_name" content="Quem Poupa, Sempre Tem">
   <title>Informações MEI | Quem Poupa, Sempre Tem</title>
   <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 
 <body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo principal</a>
   <header class="top">
     <div class="container topin">
       <a href="index.html#inicio" class="brand" aria-label="Quem Poupa, Sempre Tem — início">
@@ -22,7 +28,7 @@
         rel="noopener noreferrer">WhatsApp</a>
     </div>
   </header>
-  <main class="service-detail-page">
+  <main id="conteudo" class="service-detail-page" tabindex="-1">
     <article class="service-detail container">
       <a class="service-detail-back" href="index.html#servicos">← Voltar aos serviços</a>
       <div class="section-label">Informação financeira</div>
@@ -30,7 +36,8 @@
       <p>A MEI – Juros &amp; Dívidas ainda se encontra em preparação e regularização. Esta área permite apenas pedir
         informações e consultar uma simulação matemática ilustrativa.</p>
       <ul class="service-detail-list">
-        <li><strong>Taxa usada na simulação</strong><span>30% ao mês, com juros simples; não é uma condição de crédito validada.</span></li>
+        <li><strong>Taxa usada na simulação</strong><span><span
+              data-catalog-value="meiMonthlyRate">Consultar taxa</span> ao mês, com juros simples; não é uma condição de crédito validada.</span></li>
         <li><strong>O que o cálculo mostra</strong><span>Capital, juros ilustrativos e total matemático para o prazo indicado.</span></li>
         <li><strong>Estado do pedido</strong><span>É apenas uma manifestação preliminar de interesse, não uma candidatura formal.</span></li>
         <li><strong>Privacidade</strong><span>Não envies BI, documentos, PIN, palavras-passe ou dados bancários pelo formulário.</span></li>
@@ -63,7 +70,7 @@
                 <button type="button" class="quick-option" data-capital="2500">2.500 MT</button>
                 <button type="button" class="quick-option" data-capital="5000">5.000 MT</button>
               </div><span class="hint calc-hint">Os juros em MT mudam conforme o valor solicitado e o prazo. Taxa
-                ilustrativa: 30% ao mês.</span>
+                ilustrativa: <span data-catalog-value="meiMonthlyRate">consultar taxa</span> ao mês.</span>
               <div class="instant-result" aria-live="polite"><span>Juros: <strong id="live-interest">—</strong></span>
                 <span>Total: <strong id="live-loan-total">—</strong></span></div>
             </div>
@@ -111,7 +118,8 @@
         <aside class="summary">
           <div class="eyebrow2">Simulação do valor solicitado</div>
           <div class="price-row"><span>Capital</span><strong id="sim-capital">—</strong></div>
-          <div class="price-row"><span>Juros simples (30% ao mês)</span><strong id="sim-juros">—</strong></div>
+          <div class="price-row"><span>Juros simples (<span
+                data-catalog-value="meiMonthlyRate">consultar taxa</span> ao mês)</span><strong id="sim-juros">—</strong></div>
           <div class="price-row"><span>Juros por mês (ilustrativos)</span><strong id="sim-juros-mes">—</strong></div>
           <div class="price-row"><span>Prazo</span><strong id="sim-prazo">—</strong></div>
           <div class="price-row total-row"><span><b>Total simulado</b></span><strong id="sim-total">—</strong></div>

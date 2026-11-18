@@ -10,7 +10,7 @@ Site estático de produtos e serviços em Nampula, Moçambique.
 - `servicos-digitais.html` — plataformas, preços indicativos e formulário de consulta digital.
 - `emprestimos-mei.html` — informações e simulador/pedido preliminar MEI.
 - `assets/css/styles.css` — estilos e ajustes responsivos.
-- `assets/js/main.js` — cálculos e preparação de mensagens para WhatsApp.
+- `assets/js/main.js` — fonte única dos preços de referência, apresentação dos valores, cálculos e mensagens para WhatsApp.
 - `assets/images/` — imagens WebP do site.
 
 Abre `index.html` num navegador ou publica a pasta num servidor de ficheiros estáticos. Não é necessário compilar.

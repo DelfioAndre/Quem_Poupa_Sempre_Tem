@@ -159,7 +159,7 @@
     }
 
     .solidbtn {
-      background: linear-gradient(180deg, #2b8cef 0%, #0f6ed5 100%);
+      background: linear-gradient(180deg, #1c70c5 0%, #0f6ed5 100%);
       color: white;
       box-shadow: 0 10px 24px rgba(22, 97, 179, .28)
     }
@@ -180,12 +180,17 @@
     }
 
     .outlinebtn:focus-visible,
+    .hero .solidbtn:focus-visible {
+      outline: 3px solid #7bb8ff;
+      outline-offset: 2px
+    }
+
     .solidbtn:focus-visible,
     .pilltab:focus-visible,
     input:focus-visible,
     select:focus-visible,
     textarea:focus-visible {
-      outline: 3px solid #7bb8ff;
+      outline: 3px solid #0f559c;
       outline-offset: 2px
     }
 
@@ -300,7 +305,7 @@
     }
 
     .hero-bullets b {
-      color: #80d2ac
+      color: #8ce0b8
     }
 
     .hero-image {
@@ -409,7 +414,7 @@
     .section-label {
       font-size: 12px;
       font-weight: 900;
-      color: #2670c3;
+      color: #2568b2;
       letter-spacing: .1em;
       text-transform: uppercase
     }
@@ -900,7 +905,7 @@
     }
 
     .skip {
-      position: absolute;
+      position: fixed;
       top: -60px;
       left: 10px;
       background: #fff;
@@ -924,7 +929,7 @@
       gap: 8px;
       padding: 12px 16px;
       border-radius: 999px;
-      background: linear-gradient(180deg, #2cb673 0%, #199d5d 100%);
+      background: linear-gradient(180deg, #187958 0%, #167453 100%);
       color: #fff;
       box-shadow: 0 16px 35px rgba(24, 146, 87, .38);
       font-size: 13px;
@@ -1011,7 +1016,8 @@
 
       .header-contact {
         padding: 10px 12px;
-        font-size: 12px
+        font-size: 12px;
+        min-height: 44px
       }
 
       .header-contact .icon-svg {
@@ -1028,7 +1034,18 @@
       }
 
       .topnav a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
         font-size: 12px
+      }
+
+      .solidbtn,
+      .outlinebtn,
+      .site-cta-float,
+      .quick-option,
+      .calc-refresh {
+        min-height: 44px
       }
 
       .hero-grid {
@@ -1528,7 +1545,7 @@
     }
 
     .new-dot {
-      background: #21a87c;
+      background: #187958;
       color: #fff;
       font-size: 10px;
       font-weight: 900;
@@ -1830,7 +1847,7 @@
     }
 
     #painel-digital .platform:has(input:focus-visible) {
-      outline: 3px solid #4b9cf0;
+      outline: 3px solid #0f559c;
       outline-offset: 3px
     }
 
@@ -2007,7 +2024,7 @@
     }
 
     .pay-option:focus-within {
-      outline: 2px solid #287ce0;
+      outline: 3px solid #0f559c;
       outline-offset: 2px
     }
 
@@ -2048,7 +2065,7 @@
     }
 
     .calc-refresh:focus-visible {
-      outline: 3px solid #4c9fe7;
+      outline: 3px solid #0f559c;
       outline-offset: 2px
     }
 
@@ -2107,7 +2124,11 @@
     .quick-option:hover,
     .quick-option:focus-visible {
       background: #dfefff;
-      border-color: #357bc5;
+      border-color: #357bc5
+    }
+
+    .quick-option:focus-visible {
+      outline: 3px solid #0f559c;
       outline-offset: 2px
     }
 
@@ -2367,6 +2388,98 @@
 
       .panel {
         scroll-margin-top: 135px
+      }
+    }
+
+    .whatsapp-preview {
+      width: min(620px, calc(100% - 32px));
+      max-height: min(84vh, 760px);
+      margin: auto;
+      padding: clamp(20px, 4vw, 30px);
+      border: 1px solid #d5e1ef;
+      border-radius: 18px;
+      color: #18314f;
+      box-shadow: 0 24px 70px #07172b45
+    }
+
+    .whatsapp-preview::backdrop {
+      background: #07172bcc
+    }
+
+    .whatsapp-preview h2 {
+      margin: 0;
+      color: #102b49;
+      font-size: clamp(21px, 4vw, 27px)
+    }
+
+    .whatsapp-preview-intro {
+      margin: 9px 0 16px;
+      color: #52677e;
+      font-size: 13px;
+      line-height: 1.6
+    }
+
+    .whatsapp-preview-message {
+      max-height: 48vh;
+      overflow: auto;
+      margin: 0;
+      padding: 15px;
+      border: 1px solid #dce5ef;
+      border-radius: 12px;
+      background: #f7faff;
+      color: #233e5d;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere
+    }
+
+    .whatsapp-preview-error {
+      margin: 0;
+      color: #8c3030;
+      font-size: 13px;
+      line-height: 1.5
+    }
+
+    .whatsapp-preview-actions {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px
+    }
+
+    .whatsapp-preview-actions button {
+      min-height: 44px;
+      padding: 10px 15px;
+      border: 1px solid #b9c9dc;
+      border-radius: 11px;
+      background: #fff;
+      color: #244463;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 750;
+      cursor: pointer
+    }
+
+    .whatsapp-preview-actions button:hover {
+      background: #f0f6fd
+    }
+
+    .whatsapp-preview-actions :focus-visible {
+      outline: 3px solid #0f559c;
+      outline-offset: 3px
+    }
+
+    .whatsapp-preview-continue {
+      min-height: 44px;
+      padding: 10px 15px
+    }
+
+    @media(max-width:450px) {
+      .whatsapp-preview-actions > * {
+        flex: 1 1 100%
       }
     }
   

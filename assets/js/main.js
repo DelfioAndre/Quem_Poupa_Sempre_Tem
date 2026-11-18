@@ -10,8 +10,36 @@
       if (el) el.href = value;
     };
     const WAPP = '258856812121';
+    const PRICING = {
+      porkPerKg: 210,
+      deliveryFee: 100,
+      freeDeliveryAboveKg: 10,
+      meiMonthlyRate: .30,
+      digital: {
+        'Netflix': 280,
+        'Amazon Prime Video': 200,
+        'Spotify': 120,
+        'Crunchyroll': 180
+      }
+    };
     const round = x => Math.round((x + Number.EPSILON) * 100) / 100;
     const money = n => new Intl.NumberFormat('pt-PT', { maximumFractionDigits: 2, minimumFractionDigits: 0 }).format(round(n)) + ' MT';
+    function renderCatalogValues() {
+      const values = {
+        porkPerKg: money(PRICING.porkPerKg),
+        deliveryFee: money(PRICING.deliveryFee),
+        deliveryLimitKg: String(PRICING.freeDeliveryAboveKg),
+        meiMonthlyRate: Math.round(PRICING.meiMonthlyRate * 100) + '%',
+        netflix: money(PRICING.digital.Netflix),
+        primeVideo: money(PRICING.digital['Amazon Prime Video']),
+        spotify: money(PRICING.digital.Spotify),
+        crunchyroll: money(PRICING.digital.Crunchyroll)
+      };
+      document.querySelectorAll('[data-catalog-value]').forEach(el => {
+        const value = values[el.dataset.catalogValue];
+        if (value !== undefined) el.textContent = value;
+      });
+    }
     const trim = id => {
       const el = $(id);
       return el ? String(el.value || '').trim() : '';
@@ -43,12 +71,43 @@
       const el = $(id);
       if (el) el.addEventListener('click', callback);
     };
+    const formErrorTargets = new Map();
+    function clearFormError(id) {
+      const target = formErrorTargets.get(id);
+      if (target) {
+        target.removeAttribute('aria-invalid');
+        const descriptions = (target.getAttribute('aria-describedby') || '')
+          .split(/\s+/).filter(descriptionId => descriptionId && descriptionId !== id);
+        if (descriptions.length) target.setAttribute('aria-describedby', descriptions.join(' '));
+        else target.removeAttribute('aria-describedby');
+        formErrorTargets.delete(id);
+      }
+      setText(id, '');
+    }
+    function showFormError(id, message, target) {
+      clearFormError(id);
+      const errorEl = $(id);
+      if (errorEl) errorEl.textContent = message;
+      if (target && errorEl) {
+        target.setAttribute('aria-invalid', 'true');
+        const descriptions = (target.getAttribute('aria-describedby') || '').split(/\s+/).filter(Boolean);
+        if (!descriptions.includes(id)) descriptions.push(id);
+        target.setAttribute('aria-describedby', descriptions.join(' '));
+        formErrorTargets.set(id, target);
+      }
+      if (target) {
+        target.scrollIntoView({ block: 'center' });
+        target.focus();
+      } else if (errorEl) {
+        errorEl.scrollIntoView({ block: 'center' });
+      }
+    }
     function calculatePork() {
       const q = parseAmount(trim('kg'));
       const ok = Number.isFinite(q) && q > 0 && q <= 100000;
       const delivery = $('modo') ? $('modo').value === 'entrega' : false;
-      const s = ok ? round(q * 210) : 0;
-      const fee = ok && delivery && q <= 10 ? 100 : 0;
+      const s = ok ? round(q * PRICING.porkPerKg) : 0;
+      const fee = ok && delivery && q <= PRICING.freeDeliveryAboveKg ? PRICING.deliveryFee : 0;
       setText('q-kg', ok ? q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg' : '—');
       setText('subtotal', ok ? money(s) : '—');
       setText('taxa', ok ? (delivery ? (fee === 0 ? 'Grátis' : money(fee)) : 'Sem entrega') : '—');
@@ -57,9 +116,9 @@
       setText('live-pork', ok ? money(s + fee) : '—');
       setText('status-carne', ok ? 'Total actualizado automaticamente: ' + money(s + fee) : 'Introduz uma quantidade válida, maior que zero.');
       setText('carne-formula', ok ?
-        q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg × 210 MT = ' + money(s) + (delivery ? ' + ' + money(fee) + ' de entrega' : ' (levantamento)') + ' → ' + money(s + fee) :
-        'Valor = quilogramas × 210 MT + entrega, quando aplicável.');
-      setText('erro-carne', '');
+        q.toLocaleString('pt-PT', { maximumFractionDigits: 2 }) + ' kg × ' + money(PRICING.porkPerKg) + ' = ' + money(s) + (delivery ? ' + ' + money(fee) + ' de entrega' : ' (levantamento)') + ' → ' + money(s + fee) :
+        'Valor = quilogramas × ' + money(PRICING.porkPerKg) + ' + entrega, quando aplicável.');
+      clearFormError('erro-carne');
       return ok ? { q, s, fee, delivery, total: round(s + fee) } : null;
     }
     function updatePork() {
@@ -67,7 +126,7 @@
       if (!r) { setHref('enviar-carne', '#painel-carne'); return null; }
       setHref('enviar-carne', whatsUrl([
         'Olá! Quero consultar a disponibilidade de carne de porco nacional.', '',
-        'Quantidade: ' + r.q + ' kg', 'Preço por kg: 210 MT',
+        'Quantidade: ' + r.q + ' kg', 'Preço por kg: ' + money(PRICING.porkPerKg),
         'Subtotal: ' + money(r.s),
         'Modalidade: ' + (r.delivery ? 'Entrega' : 'Levantamento a combinar'),
         'Taxa de entrega: ' + (r.delivery ? (r.fee === 0 ? 'Grátis' : money(r.fee)) : 'Sem entrega'),
@@ -87,10 +146,7 @@
     bindClick('enviar-carne', function (e) {
       if (!updatePork()) {
         e.preventDefault();
-        const errorEl = $('erro-carne');
-        if (errorEl) errorEl.textContent = 'Indica uma quantidade válida em quilogramas antes de enviar.';
-        const kgEl = $('kg');
-        if (kgEl) kgEl.focus();
+        showFormError('erro-carne', 'Indica uma quantidade válida em quilogramas antes de enviar.', $('kg'));
       }
     });
 
@@ -105,7 +161,6 @@
       const arteEl = $('estampa-arte');
       const totalEl = $('estampa-total');
       const statusEl = $('status-estampa');
-      const erroEl = $('erro-estampa');
       const enviarEl = $('enviar-estampa');
       if (produtoEl) produtoEl.textContent = produto;
       if (quantidadeEl) quantidadeEl.textContent = qok ? qty + ' unidade' + (qty === 1 ? '' : 's') : '—';
@@ -113,7 +168,7 @@
       if (arteEl) arteEl.textContent = arte ? (arte.length > 85 ? arte.slice(0, 85) + '…' : arte) : 'A informar';
       if (totalEl) totalEl.textContent = 'Sob orçamento';
       if (statusEl) statusEl.textContent = qok ? 'Resumo actualizado para ' + qty + ' unidade' + (qty === 1 ? '' : 's') + '. Preço a confirmar.' : 'Introduz uma quantidade válida.';
-      if (erroEl) erroEl.textContent = '';
+      clearFormError('erro-estampa');
       if (!qok) { if (enviarEl) enviarEl.href = '#painel-estampa'; return null; }
       if (enviarEl) enviarEl.href = whatsUrl([
         'Olá! Gostaria de pedir orçamento de estampagem.', '',
@@ -131,11 +186,12 @@
       const r = updateStamp();
       if (!r || !r.modelo || !r.arte) {
         e.preventDefault();
-        const errorEl = $('erro-estampa');
-        if (errorEl) {
-          errorEl.textContent = 'Indica uma quantidade válida, o modelo/tamanho e a descrição da personalização.';
-          errorEl.scrollIntoView({ block: 'center' });
-        }
+        const missing = [];
+        if (!r) missing.push('quantidade válida');
+        if (!trim('modelo')) missing.push('modelo ou tamanho');
+        if (!trim('arte')) missing.push('descrição da personalização');
+        const target = !r ? $('qtd') : (!trim('modelo') ? $('modelo') : $('arte'));
+        showFormError('erro-estampa', 'Completa os dados em falta: ' + missing.join(', ') + '.', target);
       }
     });
 
@@ -143,7 +199,7 @@
       const c = parseAmount(trim('capital'));
       const m = Number(trim('meses'));
       const ok = Number.isFinite(c) && c > 0 && c <= 100000000 && Number.isInteger(m) && m > 0 && m <= 120;
-      const rate = .30;
+      const rate = PRICING.meiMonthlyRate;
       const perMonth = ok ? round(c * rate) : 0;
       const j = ok ? round(c * rate * m) : 0;
       const simCapitalEl = $('sim-capital');
@@ -155,19 +211,18 @@
       const liveInterestEl = $('live-interest');
       const liveLoanTotalEl = $('live-loan-total');
       const statusMeiEl = $('status-mei');
-      const erroMeiEl = $('erro-mei');
       if (simCapitalEl) simCapitalEl.textContent = ok ? money(c) : '—';
       if (simJurosEl) simJurosEl.textContent = ok ? money(j) : '—';
       if (simJurosMesEl) simJurosMesEl.textContent = ok ? money(perMonth) : '—';
       if (simFormulaEl) simFormulaEl.textContent = ok ?
-        money(c) + ' × 30% × ' + m + (m === 1 ? ' mês' : ' meses') + ' = ' + money(j) + ' de juros; capital + juros = ' + money(c + j) + '.' :
+        money(c) + ' × ' + (rate * 100) + '% × ' + m + (m === 1 ? ' mês' : ' meses') + ' = ' + money(j) + ' de juros; capital + juros = ' + money(c + j) + '.' :
         'Insere o valor pretendido para veres os juros e o total.';
       if (simPrazoEl) simPrazoEl.textContent = ok ? m + (m === 1 ? ' mês' : ' meses') : '—';
       if (simTotalEl) simTotalEl.textContent = ok ? money(c + j) : '—';
       if (liveInterestEl) liveInterestEl.textContent = ok ? money(j) : '—';
       if (liveLoanTotalEl) liveLoanTotalEl.textContent = ok ? money(c + j) : '—';
       if (statusMeiEl) statusMeiEl.textContent = ok ? 'Simulação automática: ' + money(j) + ' de juros e ' + money(c + j) + ' de total.' : 'Indica um montante positivo e prazo de 1 a 120 meses.';
-      if (erroMeiEl) erroMeiEl.textContent = '';
+      clearFormError('erro-mei');
       return ok ? { c, m, j, total: round(c + j) } : null;
     }
     function updateMEI() {
@@ -185,7 +240,7 @@
         'Valor pretendido: ' + money(r.c),
         'Prazo pretendido: ' + r.m + (r.m === 1 ? ' mês' : ' meses'),
         'Garantia que poderia apresentar: ' + (trim('mei-garantia') || 'A avaliar com o responsável'),
-        'Simulação ilustrativa de juros simples (30% ao mês): ' + money(r.j),
+        'Simulação ilustrativa de juros simples (' + (PRICING.meiMonthlyRate * 100) + '% ao mês): ' + money(r.j),
         'Total matemático simulado: ' + money(r.total),
         'Esta mensagem não corresponde a uma oferta nem aprovação de crédito. Solicito informações sobre condições futuras.',
         'Observações: ' + (trim('mei-observacoes') || 'Nenhuma')
@@ -200,27 +255,37 @@
     }));
     bindClick('atualizar-mei', updateMEI);
     bindClick('enviar-mei', function (e) {
-      const r = updateMEI(); let missing = [];
-      if (trim('mei-nome').length < 3) missing.push('nome completo');
-      if (!r) missing.push('valor e prazo válidos');
-      if (!trim('mei-residencia')) missing.push('bairro/zona');
-      if (!$('mei-comprovativo').value) missing.push('comprovativo');
-      if (!$('mei-rendimento').value) missing.push('rendimento');
-      if (!$('mei-maior').checked) missing.push('idade mínima');
-      if (!$('mei-bi').checked) missing.push('BI válido');
-      if (!$('mei-consente').checked) missing.push('autorização de envio');
+      const r = updateMEI();
+      const missing = [];
+      let firstMissingField = null;
+      const addMissing = (label, id) => {
+        missing.push(label);
+        if (!firstMissingField) firstMissingField = $(id);
+      };
+      if (trim('mei-nome').length < 3) addMissing('nome completo', 'mei-nome');
+      if (!r) {
+        const capital = parseAmount(trim('capital'));
+        const months = Number(trim('meses'));
+        if (!(Number.isFinite(capital) && capital > 0 && capital <= 100000000)) {
+          addMissing('valor positivo válido', 'capital');
+        }
+        if (!(Number.isInteger(months) && months > 0 && months <= 120)) {
+          addMissing('prazo entre 1 e 120 meses', 'meses');
+        }
+      }
+      if (!trim('mei-residencia')) addMissing('bairro/zona', 'mei-residencia');
+      if (!$('mei-comprovativo').value) addMissing('comprovativo', 'mei-comprovativo');
+      if (!$('mei-rendimento').value) addMissing('situação de rendimento', 'mei-rendimento');
+      if (!$('mei-maior').checked) addMissing('confirmação de idade mínima', 'mei-maior');
+      if (!$('mei-bi').checked) addMissing('confirmação de BI válido', 'mei-bi');
+      if (!$('mei-consente').checked) addMissing('autorização de envio', 'mei-consente');
       if (missing.length) {
         e.preventDefault();
-        const errorEl = $('erro-mei');
-        if (errorEl) {
-          errorEl.textContent = 'Falta preencher ou confirmar: ' + missing.join(', ') + '.';
-          errorEl.scrollIntoView({ block: 'center' });
-        }
+        showFormError('erro-mei', 'Completa ou confirma: ' + missing.join(', ') + '.', firstMissingField);
       }
     });
 
     // Serviço digital: manter a escolha dos cartões e os métodos de pagamento já aprovados.
-    const digitalPrices = { 'Netflix': 280, 'Amazon Prime Video': 200, 'Spotify': 120, 'Crunchyroll': 180 };
     const digitalPaymentDetails = {
       'M-Pesa': 'Titular: Munvera Nunes\nNúmero M-Pesa: 85 681 2121',
       'e-Mola': 'Titular: Munvera Nunes\nNúmero e-Mola: 86 957 5041',
@@ -244,7 +309,7 @@
       applyFastDigitalDefaults();
       const platform = selectedDigital();
       const months = $('digital-periodo') ? Number($('digital-periodo').value) || 0 : 0;
-      const unit = digitalPrices[platform];
+      const unit = PRICING.digital[platform];
       const payRadio = document.querySelector('input[name="digital-pagamento-radio"]:checked');
       const payment = payRadio ? payRadio.value : '';
       const paymentDetails = digitalPaymentDetails[payment] || 'Dados a confirmar com a empresa.';
@@ -253,6 +318,7 @@
       const totalEl = $('digital-total');
       const totalAvisoEl = $('digital-total-aviso');
       const enviarDigitalEl = $('enviar-digital');
+      clearFormError('digital-erro');
       if (!platform) {
         if (totalEl) totalEl.textContent = 'Escolhe uma plataforma para veres o resumo.';
         if (totalAvisoEl) totalAvisoEl.textContent = 'Selecciona Netflix, Prime Video, Spotify ou Crunchyroll.';
@@ -284,16 +350,91 @@
       const r = updateDigitalLink();
       if (!r.platform || !r.months || !r.payment) {
         e.preventDefault();
-        const errorEl = $('digital-erro');
-        if (errorEl) {
-          errorEl.textContent = 'Escolhe plataforma, meses e método de pagamento.';
-          errorEl.scrollIntoView({ block: 'center' });
+        const missing = [];
+        let firstMissingField = null;
+        if (!r.platform) {
+          missing.push('plataforma');
+          firstMissingField = document.querySelector('input[name="digital-plataforma"]');
         }
-      } else {
-        const errorEl = $('digital-erro');
-        if (errorEl) errorEl.textContent = '';
+        if (!r.months) {
+          missing.push('período');
+          if (!firstMissingField) firstMissingField = $('digital-periodo');
+        }
+        if (!r.payment) {
+          missing.push('método de pagamento');
+          if (!firstMissingField) firstMissingField = document.querySelector('input[name="digital-pagamento-radio"]');
+        }
+        showFormError('digital-erro', 'Escolhe ou confirma: ' + missing.join(', ') + '.', firstMissingField);
       }
     });
+    function bindWhatsAppPreview() {
+      const links = ['enviar-carne', 'enviar-estampa', 'enviar-mei', 'enviar-digital']
+        .map($).filter(Boolean);
+      if (!links.length) return;
+
+      const dialog = document.createElement('dialog');
+      dialog.className = 'whatsapp-preview';
+      dialog.setAttribute('aria-labelledby', 'whatsapp-preview-title');
+      dialog.innerHTML = '<h2 id="whatsapp-preview-title">Confirma o teu pedido</h2>' +
+        '<p class="whatsapp-preview-intro">Revê a mensagem antes de continuar. O WhatsApp abrirá noutra aba e terás de confirmar o envio.</p>' +
+        '<pre class="whatsapp-preview-message"></pre>' +
+        '<p class="whatsapp-preview-error" role="alert" hidden></p>' +
+        '<div class="whatsapp-preview-actions">' +
+        '<button class="whatsapp-preview-back" type="button">Voltar para editar</button>' +
+        '<a class="solidbtn whatsapp-preview-continue" target="_blank" rel="noopener noreferrer">Abrir WhatsApp</a>' +
+        '</div>';
+      document.body.appendChild(dialog);
+
+      const messageEl = dialog.querySelector('.whatsapp-preview-message');
+      const errorEl = dialog.querySelector('.whatsapp-preview-error');
+      const closeButton = dialog.querySelector('.whatsapp-preview-back');
+      const continueLink = dialog.querySelector('.whatsapp-preview-continue');
+      dialog.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && dialog.open) {
+          e.preventDefault();
+          dialog.close();
+        }
+      });
+      closeButton.addEventListener('click', function () { dialog.close(); });
+      continueLink.addEventListener('click', function () {
+        window.setTimeout(function () {
+          if (dialog.open) dialog.close();
+        }, 100);
+      });
+
+      links.forEach(link => link.addEventListener('click', function (e) {
+        if (e.defaultPrevented || typeof dialog.showModal !== 'function') return;
+        e.preventDefault();
+        let requestUrl;
+        try {
+          requestUrl = new URL(link.href);
+        } catch (error) {
+          errorEl.textContent = 'Não foi possível preparar a mensagem. Actualiza o pedido e tenta novamente.';
+          errorEl.hidden = false;
+          messageEl.hidden = true;
+          continueLink.hidden = true;
+          dialog.showModal();
+          closeButton.focus();
+          return;
+        }
+        const message = requestUrl.searchParams.get('text');
+        if (requestUrl.hostname !== 'wa.me' || !message) {
+          errorEl.textContent = 'Não foi possível preparar a mensagem. Actualiza o pedido e tenta novamente.';
+          errorEl.hidden = false;
+          messageEl.hidden = true;
+          continueLink.hidden = true;
+        } else {
+          messageEl.textContent = message;
+          messageEl.hidden = false;
+          errorEl.hidden = true;
+          continueLink.href = requestUrl.href;
+          continueLink.hidden = false;
+        }
+        dialog.showModal();
+        closeButton.focus();
+      }));
+    }
+    bindWhatsAppPreview();
     function updateActiveTab() {
       const hash = window.location.hash || '#painel-carne';
       const activeTab = document.querySelector('.pilltab[href="' + hash + '"]') || document.querySelector('.pilltab[href="#painel-carne"]');
@@ -312,6 +453,7 @@
       if (e.target && (e.target.id === 'capital' || e.target.id === 'meses')) updateMEI();
     });
     window.addEventListener('hashchange', updateActiveTab);
+    renderCatalogValues();
     applyFastDigitalDefaults();
     updatePork(); updateStamp(); updateMEI(); updateDigitalLink();
     updateActiveTab();
