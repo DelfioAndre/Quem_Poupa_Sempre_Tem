@@ -897,6 +897,35 @@
       box-shadow: 0 18px 40px rgba(24, 146, 87, .42)
     }
 
+    .back-to-header {
+      position: fixed;
+      right: 18px;
+      bottom: 78px;
+      z-index: 60;
+      width: 48px;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #07172b;
+      color: #fff;
+      border: 1px solid #a3c7ff50;
+      box-shadow: 0 10px 25px rgba(7, 23, 43, .28);
+      text-decoration: none
+    }
+
+    .back-to-header .icon-svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .back-to-header:hover,
+    .back-to-header:focus-visible {
+      transform: translateY(-2px);
+      background: #0d2443
+    }
+
     @media(max-width:900px) {
       .topin {
         gap: 14px
@@ -969,6 +998,13 @@
         bottom: 12px;
         padding: 10px 13px;
         font-size: 12px
+      }
+
+      .back-to-header {
+        right: 12px;
+        bottom: 68px;
+        width: 44px;
+        height: 44px
       }
 
       .topnav a {
