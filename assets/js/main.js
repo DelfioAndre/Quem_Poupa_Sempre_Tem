@@ -45,6 +45,21 @@
       return el ? String(el.value || '').trim() : '';
     };
     const whatsUrl = msg => 'https://wa.me/' + WAPP + '?text=' + encodeURIComponent(msg);
+    function buildWhatsAppOrder(data) {
+      return [
+        'Olá! Quero consultar a disponibilidade de ' + data.service + '.',
+        '',
+        'Quantidade: ' + data.quantity,
+        'Preço por ' + data.unitLabel + ': ' + data.unitPrice,
+        'Subtotal: ' + data.subtotal,
+        'Modalidade: ' + data.modality,
+        'Taxa de entrega: ' + data.deliveryFee,
+        'Total estimado: ' + data.total,
+        'Bairro/local: ' + data.location,
+        'Data pretendida: ' + data.date,
+        'Observações: ' + data.observations
+      ].join('\n');
+    }
     function parseAmount(raw) {
       let v = String(raw || '').trim().replace(/[\s\u00a0]/g, '');
       if (!v) return NaN;
@@ -124,17 +139,19 @@
     function updatePork() {
       const r = calculatePork();
       if (!r) { setHref('enviar-carne', '#painel-carne'); return null; }
-      setHref('enviar-carne', whatsUrl([
-        'Olá! Quero consultar a disponibilidade de carne de porco nacional.', '',
-        'Quantidade: ' + r.q + ' kg', 'Preço por kg: ' + money(PRICING.porkPerKg),
-        'Subtotal: ' + money(r.s),
-        'Modalidade: ' + (r.delivery ? 'Entrega' : 'Levantamento a combinar'),
-        'Taxa de entrega: ' + (r.delivery ? (r.fee === 0 ? 'Grátis' : money(r.fee)) : 'Sem entrega'),
-        'Total estimado: ' + money(r.total),
-        'Bairro/local: ' + (trim('bairro') || 'A informar'),
-        'Data pretendida: ' + (trim('data') || 'A combinar'),
-        'Observações: ' + (trim('obs') || 'Nenhuma')
-      ].join('\n')));
+      setHref('enviar-carne', whatsUrl(buildWhatsAppOrder({
+        service: 'carne de porco nacional',
+        quantity: r.q + ' kg',
+        unitLabel: 'kg',
+        unitPrice: money(PRICING.porkPerKg),
+        subtotal: money(r.s),
+        modality: r.delivery ? 'Entrega' : 'Levantamento a combinar',
+        deliveryFee: r.delivery ? (r.fee === 0 ? 'Grátis' : money(r.fee)) : 'Sem entrega',
+        total: money(r.total),
+        location: trim('bairro') || 'A informar',
+        date: trim('data') || 'A combinar',
+        observations: trim('obs') || 'Nenhuma'
+      })));
       return r;
     }
     watch(['kg', 'modo', 'bairro', 'data', 'obs'], updatePork);
@@ -170,14 +187,21 @@
       if (statusEl) statusEl.textContent = qok ? 'Resumo actualizado para ' + qty + ' unidade' + (qty === 1 ? '' : 's') + '. Preço a confirmar.' : 'Introduz uma quantidade válida.';
       clearFormError('erro-estampa');
       if (!qok) { if (enviarEl) enviarEl.href = '#painel-estampa'; return null; }
-      if (enviarEl) enviarEl.href = whatsUrl([
-        'Olá! Gostaria de pedir orçamento de estampagem.', '',
-        'Produto: ' + produto, 'Quantidade: ' + qty,
-        'Modelo/tamanho: ' + (modelo || 'A informar'),
-        'Imagem, frase ou ideia: ' + (arte || 'A informar'),
-        'Preço: a confirmar pela empresa', '',
-        'Aguardo confirmação de disponibilidade, preço e prazo. Posso enviar uma imagem na conversa.'
-      ].join('\n'));
+      if (enviarEl) enviarEl.href = whatsUrl(buildWhatsAppOrder({
+        service: 'estampagem',
+        quantity: qty + (qty === 1 ? ' unidade' : ' unidades'),
+        unitLabel: 'unidade',
+        unitPrice: 'A confirmar',
+        subtotal: 'A confirmar',
+        modality: 'Entrega ou levantamento a combinar',
+        deliveryFee: 'A confirmar',
+        total: 'A confirmar',
+        location: 'A informar',
+        date: 'A combinar',
+        observations: 'Produto: ' + produto + '. Modelo/tamanho: ' + (modelo || 'A informar') +
+          '. Personalização: ' + (arte || 'A informar') +
+          '. Posso enviar a imagem de referência na conversa.'
+      }));
       return { qty, produto, modelo, arte };
     }
     watch(['produto', 'qtd', 'modelo', 'arte'], updateStamp);
@@ -229,22 +253,26 @@
       const r = calculateMEI();
       const enviarMei = $('enviar-mei');
       if (!r) { if (enviarMei) enviarMei.href = '#painel-mei'; return null; }
-      const msg = [
-        'Olá! Gostaria de apresentar um PRÉ-PEDIDO DE INFORMAÇÃO sobre empréstimo à MEI – Juros & Dívidas.', '',
-        'Nome completo: ' + (trim('mei-nome') || 'A informar'),
-        'Idade: ' + ($('mei-maior') && $('mei-maior').checked ? '18 anos ou mais confirmado' : 'A confirmar'),
-        'BI válido: ' + ($('mei-bi') && $('mei-bi').checked ? 'Confirmado (sem envio de documento)' : 'A confirmar'),
-        'Zona de residência: ' + (trim('mei-residencia') || 'A informar'),
-        'Comprovativo de residência: ' + (($('mei-comprovativo') && $('mei-comprovativo').value) || 'A informar'),
-        'Situação de rendimento: ' + (($('mei-rendimento') && $('mei-rendimento').value) || 'A informar'),
-        'Valor pretendido: ' + money(r.c),
-        'Prazo pretendido: ' + r.m + (r.m === 1 ? ' mês' : ' meses'),
-        'Garantia que poderia apresentar: ' + (trim('mei-garantia') || 'A avaliar com o responsável'),
-        'Simulação ilustrativa de juros simples (' + (PRICING.meiMonthlyRate * 100) + '% ao mês): ' + money(r.j),
-        'Total matemático simulado: ' + money(r.total),
-        'Esta mensagem não corresponde a uma oferta nem aprovação de crédito. Solicito informações sobre condições futuras.',
-        'Observações: ' + (trim('mei-observacoes') || 'Nenhuma')
-      ].join('\n');
+      const msg = buildWhatsAppOrder({
+        service: 'informação sobre empréstimo à MEI – Juros & Dívidas',
+        quantity: r.m + (r.m === 1 ? ' mês' : ' meses'),
+        unitLabel: 'mês',
+        unitPrice: money(round(r.c * PRICING.meiMonthlyRate)),
+        subtotal: money(r.c),
+        modality: 'Análise e contacto a combinar',
+        deliveryFee: 'Sem entrega',
+        total: money(r.total),
+        location: trim('mei-residencia') || 'A informar',
+        date: 'A combinar',
+        observations: 'Nome: ' + (trim('mei-nome') || 'A informar') +
+          '. Valor pretendido: ' + money(r.c) +
+          '. Comprovativo: ' + (($('mei-comprovativo') && $('mei-comprovativo').value) || 'A informar') +
+          '. Rendimento: ' + (($('mei-rendimento') && $('mei-rendimento').value) || 'A informar') +
+          '. Garantia: ' + (trim('mei-garantia') || 'A avaliar') +
+          '. Juros ilustrativos: ' + money(r.j) +
+          '. Esta mensagem não corresponde a uma oferta nem aprovação de crédito. ' +
+          (trim('mei-observacoes') || 'Nenhuma')
+      });
       if (enviarMei) enviarMei.href = whatsUrl(msg);
       return r;
     }
@@ -329,16 +357,23 @@
         if (totalEl) totalEl.textContent = platform + ' · ' + months + (months === 1 ? ' mês' : ' meses') + ' · ' + money(total);
         if (totalAvisoEl) totalAvisoEl.textContent = 'Preço indicado: ' + unit + ' MT/mês × ' + months + '.';
       }
-      const msg = ['Olá! Gostaria de consultar um serviço digital da Quem Poupa, Sempre Tem.',
-        'Plataforma: ' + (platform || 'A escolher'),
-        'Período: ' + (months ? months + (months === 1 ? ' mês' : ' meses') : 'A escolher'),
-        'Preço indicado por mês: ' + (unit ? money(unit) : 'A confirmar'),
-        'Total estimado: ' + (total === null ? 'A calcular' : money(total)),
-        'Pagamento preferido: ' + (payment || 'A escolher'),
-        'Dados do método de pagamento:\n' + paymentDetails,
-        'Aguardo confirmação de disponibilidade, modalidade autorizada e preço final. Vou confirmar os dados com a empresa antes de transferir dinheiro.',
-        'Observações: ' + (obs || 'Nenhuma')
-      ].join('\n');
+      const msg = buildWhatsAppOrder({
+        service: 'serviço digital',
+        quantity: months ? months + (months === 1 ? ' mês' : ' meses') : 'A escolher',
+        unitLabel: 'mês',
+        unitPrice: unit ? money(unit) : 'A confirmar',
+        subtotal: total === null ? 'A calcular' : money(total),
+        modality: 'Activação digital a combinar',
+        deliveryFee: 'Sem entrega',
+        total: total === null ? 'A calcular' : money(total),
+        location: 'A informar',
+        date: 'A combinar',
+        observations: 'Plataforma: ' + (platform || 'A escolher') +
+          '. Pagamento preferido: ' + (payment || 'A escolher') +
+          '. Dados do pagamento: ' + paymentDetails.replace(/\n/g, ' ') +
+          '. Aguardo confirmação de disponibilidade, modalidade autorizada e preço final. ' +
+          (obs || 'Nenhuma')
+      });
       if (enviarDigitalEl) enviarDigitalEl.href = whatsUrl(msg);
       return { platform, months, payment };
     }
