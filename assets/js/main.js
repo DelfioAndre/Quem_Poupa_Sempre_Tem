@@ -488,6 +488,19 @@
       if (e.target && (e.target.id === 'capital' || e.target.id === 'meses')) updateMEI();
     });
     window.addEventListener('hashchange', updateActiveTab);
+
+    document.querySelectorAll('a[href="#header"], .topnav a').forEach(link => {
+      link.addEventListener('click', function (event) {
+        if (!link.matches('a[href="#header"]') && !link.textContent.trim().toLowerCase().match(/^home$/)) return;
+
+        event.preventDefault();
+        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        if (window.location.hash !== '#header') {
+          history.replaceState(null, '', '#header');
+        }
+      });
+    });
+
     renderCatalogValues();
     applyFastDigitalDefaults();
     updatePork(); updateStamp(); updateMEI(); updateDigitalLink();
